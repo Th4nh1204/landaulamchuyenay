@@ -37,7 +37,7 @@ function Reloadgui()
             return error("wrong format used");
         end;
         
-        Time = (char.HumanoidRootPart.Position - (vec3 or input.Position)).magnitude/1000;
+        Time = (char.HumanoidRootPart.Position - (vec3 or input.Position)).magnitude/7000;
         local twn = game.TweenService:Create(char.HumanoidRootPart, TweenInfo.new(Time,Enum.EasingStyle.Linear), {CFrame = (cframe or input.CFrame) * offset});
         twn:Play();
         twn.Completed:Wait();
@@ -53,29 +53,40 @@ Main:addButton("Reload GUI", function()
     Reloadgui()
 end)
 
-Main:addKeybind("Keybind Turn ON/OFF", Enum.KeyCode.LeftControl, function()
-	venyx:toggle()
-end, function()
-end)
-
-Main:addToggle("Collect Daily Spin", false, function(state)
-    _G.DailySpin = state
-    while _G.DailySpin do task.wait()
-        pcall(function()
-    game:GetService("ReplicatedStorage"):WaitForChild("spins_thing_remote"):InvokeServer()
-   end)
-    end
+Main:addButton("Redeem Code", function()
+    game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksForLikes600K")
+    game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksForLikes600K2")
 end)
 
 Main:addToggle("Test", false, function(value)
     print("Test", value)
 end)
-
-
+spawn(function()
+    while task.wait() do
+        if getgenv().Noclip == true then
+            for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                if v.ClassName == "Part" or v.ClassName == "MeshPart" then
+                    v.CanCollide = false
+                end
+            end
+        end
+    end
+end)
+Main:addToggle("Noclip", nil, function(value)
+    getgenv().Noclip = value
+    wait(0.5)
+    if not getgenv().Noclip then
+        for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+            if v.ClassName == "Part" or v.ClassName == "MeshPart" then
+                v.CanCollide = true
+            end
+        end
+    end
+end)
 Main:addToggle("Auto Farm Boss", nil, function(value)
     getgenv().AutoFarmBoss = value
 end)
-
+-- Ouwigahara
 local Main = page:addSection("Ouwigahara")
 Main:addToggle("Auto Farm", nil, function(value)
     getgenv().AutoFarmGahara = value
@@ -573,7 +584,7 @@ end)
     Main:addSlider("Distance Between Mobs Y [Default: 12]", 12, -16, 16, function(value)
         getgenv().mobdis2 = value
     end)
-
+--MUGEN TRAIN
     local Main = page:addSection("Mugen Train")
 Main:addToggle("Auto Farm", nil, function(value)
     getgenv().AutoFarmMugen = value
@@ -702,9 +713,13 @@ getgenv().KillAuraType = "Fist"
     Main:addSlider("Distance Between Mobs Y [Default: 0]", 0, -16, 16, function(value)
         getgenv().mobdis4 = value
     end)
+    Main:addButton("Buy Mugen Train Ticket", function()
+        local args = {[1] = 1}
+        game:GetService("ReplicatedStorage"):WaitForChild("purchase_mugen_ticket"):FireServer(unpack(args))        
+    end)
 --Section 2 | MISC 
     local page2 = venyx:addPage("Misc", 13677751482)
-    local Misc = page2:addSection("LocalPlayer")
+    local Misc = page2:addSection("Local Player")
     
     Misc:addToggle("Semi Kamado [Only Demon]", false, function(value)
         if value then
@@ -761,14 +776,26 @@ getgenv().KillAuraType = "Fist"
             end)
         end
     end)
-     
+     --Muzan
     local Misc = page2:addSection("Quest Muzan")
 --Telport Muzan
     Misc:addButton("Teleport To Muzan", function()
         game.Players.LocalPlayer.Character:MoveTo(game:GetService("Workspace").Muzan.SpawnPos.Value) 
     end)
-    Misc:addButton("Teleport To Doctor Higoshima", function()
-        game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(game:GetService("Workspace")["Doctor Higoshima"].HumanoidRootPart.CFrame)    
+--Other
+    local Misc = page2:addSection("Other")
+    Misc:addKeybind("Keybind Turn ON/OFF", Enum.KeyCode.LeftControl, function()
+        venyx:toggle()
+    end, function()
+    end)
+
+    Misc:addToggle("Collect Daily Spin", false, function(state)
+        _G.DailySpin = state
+        while _G.DailySpin do task.wait()
+            pcall(function()
+        game:GetService("ReplicatedStorage"):WaitForChild("spins_thing_remote"):InvokeServer()
+       end)
+        end
     end)
 end
 Reloadgui()
