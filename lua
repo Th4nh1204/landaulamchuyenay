@@ -753,8 +753,8 @@ getgenv().KillAuraType = "Fist"
         end
     end) 
 
-    getgenv().mobdis3 = 13
-    Main:addSlider("Distance Between Mobs X [Default: 13]", 13, -16, 16, function(value)
+    getgenv().mobdis3 = 11
+    Main:addSlider("Distance Between Mobs X [Default: 11]", 11, -16, 16, function(value)
         getgenv().mobdis3 = value
     end)
     getgenv().mobdis4 = 0
