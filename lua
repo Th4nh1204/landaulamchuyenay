@@ -92,24 +92,28 @@ getgenv().KillAuraType = "Fist"
                 getgenv().ClawKillAura = false
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "Sword" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = true
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = false
                 getgenv().ClawKillAura = false
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "WarFan" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = false
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = true
                 getgenv().ClawKillAura = false
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "Claw" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = false
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = false
                 getgenv().ClawKillAura = true
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "Scythe" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = false
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = false
@@ -589,24 +593,28 @@ getgenv().KillAuraType = "Fist"
                 getgenv().ClawKillAura = false
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "Sword" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = true
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = false
                 getgenv().ClawKillAura = false
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "WarFan" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = false
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = true
                 getgenv().ClawKillAura = false
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "Claw" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = false
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = false
                 getgenv().ClawKillAura = true
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "Scythe" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = false
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = false
@@ -729,24 +737,28 @@ getgenv().KillAuraType = "Fist"
                 getgenv().ClawKillAura = false
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "Sword" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = true
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = false
                 getgenv().ClawKillAura = false
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "WarFan" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = false
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = true
                 getgenv().ClawKillAura = false
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "Claw" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = false
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = false
                 getgenv().ClawKillAura = true
                 getgenv().ScytheKillAura = false
             elseif getgenv().KillAuraType == "Scythe" then
+                getgenv().AutoBlock = true
                 getgenv().SwordKillAura = false
                 getgenv().FistKillAura = false
                 getgenv().WarFanKillAura = false
