@@ -53,6 +53,11 @@ Main:addButton("Reload GUI", function()
     Reloadgui()
 end)
 
+Main:addKeybind("Keybind Turn ON/OFF", Enum.KeyCode.LeftControl, function()
+	venyx:toggle()
+end, function()
+end)
+
 Main:addToggle("Collect Daily Spin", false, function(state)
     _G.DailySpin = state
     while _G.DailySpin do task.wait()
