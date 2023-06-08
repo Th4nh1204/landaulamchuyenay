@@ -64,6 +64,7 @@ end)
 
 Main:addButton("Redeem Code", function()
     game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksForLikes600K")
+    wait(10)
     game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksForLikes600K2")
 end)
 
@@ -95,7 +96,121 @@ end)
 Main:addToggle("Auto Farm Boss", nil, function(value)
     getgenv().AutoFarmBoss = value
 end)
-Main:addToggle("Collect Chest", true, function(value)
+getgenv().KillAuraType = "Fist"
+    Main:addDropdown("Kill Aura Method", {"Fist", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
+        getgenv().KillAuraType = text 
+
+        if getgenv().FistKillAura or getgenv().SwordKillAura or getgenv().WarFanKillAura or getgenv().ClawKillAura or getgenv().ScytheKillAura then
+            getgenv().SwordKillAura = false
+            getgenv().FistKillAura = false
+            getgenv().WarFanKillAura = false
+            getgenv().ClawKillAura = false
+            getgenv().ScytheKillAura = false
+            task.wait(3)
+            if getgenv().KillAuraType == "Fist" then
+                getgenv().FistKillAura = true
+                getgenv().SwordKillAura = false
+                getgenv().WarFanKillAura = false
+                getgenv().ClawKillAura = false
+                getgenv().ScytheKillAura = false
+            elseif getgenv().KillAuraType == "Sword" then
+                getgenv().SwordKillAura = true
+                getgenv().FistKillAura = false
+                getgenv().WarFanKillAura = false
+                getgenv().ClawKillAura = false
+                getgenv().ScytheKillAura = false
+            elseif getgenv().KillAuraType == "WarFan" then
+                getgenv().SwordKillAura = false
+                getgenv().FistKillAura = false
+                getgenv().WarFanKillAura = true
+                getgenv().ClawKillAura = false
+                getgenv().ScytheKillAura = false
+            elseif getgenv().KillAuraType == "Claw" then
+                getgenv().SwordKillAura = false
+                getgenv().FistKillAura = false
+                getgenv().WarFanKillAura = false
+                getgenv().ClawKillAura = true
+                getgenv().ScytheKillAura = false
+            elseif getgenv().KillAuraType == "Scythe" then
+                getgenv().SwordKillAura = false
+                getgenv().FistKillAura = false
+                getgenv().WarFanKillAura = false
+                getgenv().ClawKillAura = false
+                getgenv().ScytheKillAura = true
+            end
+        end
+    end)
+    Main:addToggle("Kill Aura", nil, function(value)
+        if value then
+            pcall(function()
+                if getgenv().KillAuraType == "Fist" then
+                    getgenv().FistKillAura = true
+                    getgenv().SwordKillAura = false
+                    getgenv().WarFanKillAura = false
+                    getgenv().ClawKillAura = false
+                    getgenv().ScytheKillAura = false
+                elseif getgenv().KillAuraType == "Sword" then
+                    getgenv().SwordKillAura = true
+                    getgenv().FistKillAura = false
+                    getgenv().WarFanKillAura = false
+                    getgenv().ClawKillAura = false
+                    getgenv().ScytheKillAura = false
+                elseif getgenv().KillAuraType == "WarFan" then
+                    getgenv().SwordKillAura = false
+                    getgenv().FistKillAura = false
+                    getgenv().WarFanKillAura = true
+                    getgenv().ClawKillAura = false
+                    getgenv().ScytheKillAura = false
+                elseif getgenv().KillAuraType == "Claw" then
+                    getgenv().SwordKillAura = false
+                    getgenv().FistKillAura = false
+                    getgenv().WarFanKillAura = false
+                    getgenv().ClawKillAura = true
+                    getgenv().ScytheKillAura = false
+                elseif getgenv().KillAuraType == "Scythe" then
+                    getgenv().SwordKillAura = false
+                    getgenv().FistKillAura = false
+                    getgenv().WarFanKillAura = false
+                    getgenv().ClawKillAura = false
+                    getgenv().ScytheKillAura = true
+                end
+            end)
+        elseif not value then
+            pcall(function()
+                getgenv().SwordKillAura = false
+                getgenv().FistKillAura = false
+                getgenv().WarFanKillAura = false
+                getgenv().ClawKillAura = false
+                getgenv().ScytheKillAura = false
+            end)
+        end
+    end)
+
+    Main:addToggle("Auto Block", nil, function(value)
+        if value then
+            pcall(function()
+                getgenv().AutoBlock = true
+                local args = {
+                    [1] = "add_blocking",
+                    [2] = "Players."..game.Players.LocalPlayer.Name..".PlayerScripts.Skills_Modules.Combat.Sword//Block",
+                    [3] = 1,
+                    [4] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name),
+                    [5] = 1
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+            end)
+        elseif not value then
+            pcall(function()
+                getgenv().AutoBlock = false
+                local args = {
+                    [1] = "remove_blocking",
+                    [2] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name)
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
+            end)
+        end
+    end)
+Main:addToggle("Collect Loot", true, function(value)
     getgenv().AutoLoot = value        
 end)
 spawn(function()
@@ -304,95 +419,6 @@ while task.wait() do
 end
 end)
 -- Kill Aura
-getgenv().KillAuraType = "Fist"
-    Main:addDropdown("Kill Aura Method", {"Fist", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
-        getgenv().KillAuraType = text 
-
-        if getgenv().FistKillAura or getgenv().SwordKillAura or getgenv().WarFanKillAura or getgenv().ClawKillAura or getgenv().ScytheKillAura then
-            getgenv().SwordKillAura = false
-            getgenv().FistKillAura = false
-            getgenv().WarFanKillAura = false
-            getgenv().ClawKillAura = false
-            getgenv().ScytheKillAura = false
-            task.wait(3)
-            if getgenv().KillAuraType == "Fist" then
-                getgenv().FistKillAura = true
-                getgenv().SwordKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Sword" then
-                getgenv().SwordKillAura = true
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "WarFan" then
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = true
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Claw" then
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = true
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Scythe" then
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = true
-            end
-        end
-    end)
-    Main:addToggle("Kill Aura", nil, function(value)
-        if value then
-            pcall(function()
-                if getgenv().KillAuraType == "Fist" then
-                    getgenv().FistKillAura = true
-                    getgenv().SwordKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Sword" then
-                    getgenv().SwordKillAura = true
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "WarFan" then
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = true
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Claw" then
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = true
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Scythe" then
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = true
-                end
-            end)
-        elseif not value then
-            pcall(function()
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            end)
-        end
-    end)
     spawn(function()
         getgenv().Howlongsincelastfired = tick()
         remoteName = "Handle_Initiate_S"
@@ -596,31 +622,138 @@ spawn(function()
 end)
 
 -- Auto BLock
-    Main:addToggle("Auto Block", nil, function(value)
-        if value then
-            pcall(function()
-                getgenv().AutoBlock = true
-                local args = {
-                    [1] = "add_blocking",
-                    [2] = "Players."..game.Players.LocalPlayer.Name..".PlayerScripts.Skills_Modules.Combat.Sword//Block",
-                    [3] = 1,
-                    [4] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name),
-                    [5] = 1
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
-            end)
-        elseif not value then
-            pcall(function()
-                getgenv().AutoBlock = false
-                local args = {
-                    [1] = "remove_blocking",
-                    [2] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name)
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
-            end)
-        end
-    end) 
+    spawn(function()
+        spawn(function()
+            local SEARCH_RADIUS = 15 
 
+            local function isHumanoidRootPart(part)
+                return part:IsA("BasePart") and part.Name == "HumanoidRootPart" and part.Parent:IsA("Model") and part.Parent:FindFirstChildOfClass("Humanoid")
+            end
+        
+            local function detectHumanoidRootParts()
+                local player = game.Players.LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local humanoidRootParts = {}
+        
+                local region = Region3.new(character:WaitForChild("HumanoidRootPart").Position - Vector3.new(SEARCH_RADIUS, SEARCH_RADIUS, SEARCH_RADIUS), character:WaitForChild("HumanoidRootPart").Position + Vector3.new(SEARCH_RADIUS, SEARCH_RADIUS, SEARCH_RADIUS))
+        
+                local parts = workspace:FindPartsInRegion3(region, nil, math.huge)
+        
+                for _, part in ipairs(parts) do
+                    if isHumanoidRootPart(part) and part.Parent ~= character then
+                        table.insert(humanoidRootParts, part)
+                    end
+                end
+        
+                return humanoidRootParts
+            end
+        
+            local function lookAtTarget(targetPart)
+                game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position, targetPart.Position)
+            end
+        
+            local function getPlayingAnimationTracks(humanoid)
+                local animationTracks = {}
+                if humanoid then
+                    for _, animationTrack in ipairs(humanoid:GetPlayingAnimationTracks()) do
+                        table.insert(animationTracks, animationTrack)
+                    end
+                end
+                return animationTracks
+            end
+            while task.wait() do
+                if getgenv().AutoBlock then
+                   
+                    local humanoidRootParts = detectHumanoidRootParts()
+
+                   
+                    for _, part in ipairs(humanoidRootParts) do
+                        local humanoid = part.Parent:FindFirstChildOfClass("Humanoid")
+                        local animationTracks = getPlayingAnimationTracks(humanoid)
+                        
+                        if animationTracks then
+                          
+                            local animationTrack = animationTracks[1]
+                       
+                            local targetPart = part
+                                lookAtTarget(targetPart)
+                                wait()                        
+                           
+                            break
+                        end
+                    end
+                    wait(0.05)
+                end
+            end
+        end)
+        remoteName = "Handle_Initiate_S_"
+        remoteType = "InvokeServer"
+
+        local meta = getrawmetatable(game)
+        setreadonly(meta, false)
+        local old_meta = meta.__namecall
+
+        meta.__namecall = function(self, ...)
+            local method = getnamecallmethod()
+            args = {...}
+            if method == remoteType then
+                if tostring(self, unpack({...})) == remoteName and args[1] == "remove_blocking" and getgenv().AutoBlock then
+                    print("Turn on block again")
+                    task.wait(0.1)
+                        local args = {
+                            [1] = "add_blocking",
+                            [2] = "Players."..game.Players.LocalPlayer.Name..".PlayerScripts.Skills_Modules.Combat.Sword//Block",
+                            [3] = 1,
+                            [4] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name),
+                            [5] = 2
+                        }
+                        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+                end
+            end
+            return old_meta(self, ...)
+        end
+        spawn(function()
+            game.Players.LocalPlayer.Character.Humanoid.Died:Connect(function()
+                if getgenv().AutoBlockWeapon and game.Players.LocalPlayer.Backpack:FindFirstChild(getgenv().AutoBlockWeapon) then
+                wait(5)
+                game.Players.LocalPlayer.Backpack:FindFirstChild(getgenv().AutoBlockWeapon).Parent = game.Players.LocalPlayer.Character
+                end
+            end)
+            while task.wait() do
+                pcall(function()
+                repeat wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                local hum = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if not hum:FindFirstChild("Block_Ui") and getgenv().AutoBlock then
+                    local args = {
+                        [1] = "add_blocking",
+                        [2] = "Players."..game.Players.LocalPlayer.Name..".PlayerScripts.Skills_Modules.Combat.Sword//Block",
+                        [3] = 1,
+                        [4] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name),
+                        [5] = 2
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+                end
+                end)
+            end
+        end)
+end)
+    getgenv().Backpackdata = {}
+    function reloadbackpack()
+            getgenv().Backpackdata = {}
+            for i, v in pairs(game.Players.LocalPlayer:WaitForChild("Backpack"):GetChildren()) do
+                table.insert(getgenv().Backpackdata, v.Name)
+                print(v.Name)
+            end
+    end
+    reloadbackpack() 
+    Main:addDropdown("Kill Aura + Block", getgenv().Backpackdata, function(text)
+        getgenv().AutoBlockWeapon = text
+        if game.Players.LocalPlayer.Backpack:FindFirstChild(getgenv().AutoBlockWeapon) then
+            local Weapon = game.Players.LocalPlayer.Backpack:FindFirstChild(getgenv().AutoBlockWeapon)
+            Weapon.Parent = game.Players.LocalPlayer.Character
+        end
+    end)
+    
     getgenv().mobdis = 0
     Main:addSlider("Distance Between Mobs X [Default: 0]", 0, -20, 20, function(value)
         getgenv().mobdis = value
@@ -638,120 +771,13 @@ Main:addToggle("Auto Farm", nil, function(value)
     getgenv().AutoFarmMugen = value
 end)
 
-getgenv().KillAuraType = "Fist"
-    Main:addDropdown("Kill Aura Method", {"Fist", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
-        getgenv().KillAuraType = text 
-
-        if getgenv().FistKillAura or getgenv().SwordKillAura or getgenv().WarFanKillAura or getgenv().ClawKillAura or getgenv().ScytheKillAura then
-            getgenv().SwordKillAura = false
-            getgenv().FistKillAura = false
-            getgenv().WarFanKillAura = false
-            getgenv().ClawKillAura = false
-            getgenv().ScytheKillAura = false
-            task.wait(3)
-            if getgenv().KillAuraType == "Fist" then
-                getgenv().FistKillAura = true
-                getgenv().SwordKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Sword" then
-                getgenv().SwordKillAura = true
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "WarFan" then
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = true
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Claw" then
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = true
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Scythe" then
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = true
-            end
-        end
-    end)
-    Main:addToggle("Kill Aura", nil, function(value)
-        if value then
-            pcall(function()
-                if getgenv().KillAuraType == "Fist" then
-                    getgenv().FistKillAura = true
-                    getgenv().SwordKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Sword" then
-                    getgenv().SwordKillAura = true
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "WarFan" then
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = true
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Claw" then
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = true
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Scythe" then
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = true
-                end
-            end)
-        elseif not value then
-            pcall(function()
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            end)
-        end
-    end)
-
-    Main:addToggle("Auto Block", nil, function(value)
-        if value then
-            pcall(function()
-                getgenv().AutoBlock = true
-                local args = {
-                    [1] = "add_blocking",
-                    [2] = "Players."..game.Players.LocalPlayer.Name..".PlayerScripts.Skills_Modules.Combat.Sword//Block",
-                    [3] = 1,
-                    [4] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name),
-                    [5] = 1
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
-            end)
-        elseif not value then
-            pcall(function()
-                getgenv().AutoBlock = false
-                local args = {
-                    [1] = "remove_blocking",
-                    [2] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name)
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
-            end)
-        end
-    end) 
+Main:addDropdown("Kill Aura + Block", getgenv().Backpackdata, function(text)
+    getgenv().AutoBlockWeapon = text
+    if game.Players.LocalPlayer.Backpack:FindFirstChild(getgenv().AutoBlockWeapon) then
+        local Weapon = game.Players.LocalPlayer.Backpack:FindFirstChild(getgenv().AutoBlockWeapon)
+        Weapon.Parent = game.Players.LocalPlayer.Character
+    end
+end) 
 
     getgenv().mobdis3 = 11
     Main:addSlider("Distance Between Mobs X [Default: 11]", 11, -16, 16, function(value)
@@ -848,4 +874,3 @@ getgenv().KillAuraType = "Fist"
     venyx:SelectPage(venyx.pages[1], true)
 end
 Reloadgui()
-
