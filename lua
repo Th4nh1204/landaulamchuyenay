@@ -37,7 +37,7 @@ function Reloadgui()
             return error("wrong format used");
         end;
         
-        Time = (char.HumanoidRootPart.Position - (vec3 or input.Position)).magnitude/7000;
+        Time = (char.HumanoidRootPart.Position - (vec3 or input.Position)).magnitude/700;
         local twn = game.TweenService:Create(char.HumanoidRootPart, TweenInfo.new(Time,Enum.EasingStyle.Linear), {CFrame = (cframe or input.CFrame) * offset});
         twn:Play();
         twn.Completed:Wait();
@@ -85,6 +85,42 @@ Main:addToggle("Noclip", nil, function(value)
 end)
 Main:addToggle("Auto Farm Boss", nil, function(value)
     getgenv().AutoFarmBoss = value
+end)
+Main:addToggle("Collect Chest", true, function(value)
+    getgenv().AutoLoot = value        
+end)
+spawn(function()
+    getgenv().AutoLoot = true
+    getgenv().TotalChest = 0
+    getgenv().TotalItem = 0
+
+    while task.wait(0.7) do
+        if getgenv().AutoLoot then
+            pcall(function()
+                local chests = workspace:WaitForChild("Debree"):GetChildren()
+
+                for i, v in pairs(chests) do
+                    if v.Name == "Loot_Chest" and v:FindFirstChild("Root") and v:FindFirstChild("Drops") then
+                        if (v.Root.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 30 then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Root.CFrame 
+                            print("CHEST FOUND")
+                            getgenv().TotalChest = getgenv().TotalChest + 1
+                            for i, v1 in pairs(v.Drops:GetChildren()) do
+                                local args = {
+                                    [1] = v1.Name
+                                }
+                                v:WaitForChild("Add_To_Inventory"):InvokeServer(unpack(args))
+                                task.wait()
+                                getgenv().TotalItem = getgenv().TotalItem + 1
+                            end
+                            task.wait(0.7)
+                            v:Destroy()
+                        end
+                    end
+                end
+            end)
+        end
+    end
 end)
 -- Ouwigahara
 local Main = page:addSection("Ouwigahara")
@@ -705,8 +741,8 @@ getgenv().KillAuraType = "Fist"
         end
     end) 
 
-    getgenv().mobdis3 = -7
-    Main:addSlider("Distance Between Mobs X [Default: -7]", -7, -16, 16, function(value)
+    getgenv().mobdis3 = 13
+    Main:addSlider("Distance Between Mobs X [Default: 13]", 13, -16, 16, function(value)
         getgenv().mobdis3 = value
     end)
     getgenv().mobdis4 = 0
@@ -797,5 +833,7 @@ getgenv().KillAuraType = "Fist"
        end)
         end
     end)
+    venyx:SelectPage(venyx.pages[1], true)
 end
 Reloadgui()
+
