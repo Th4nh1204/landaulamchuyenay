@@ -689,12 +689,12 @@ getgenv().KillAuraType = "Fist"
         end
     end) 
 
-    getgenv().mobdis3 = 0
-    Main:addSlider("Distance Between Mobs X [Default: 0]", 0, -16, 16, function(value)
+    getgenv().mobdis3 = -7
+    Main:addSlider("Distance Between Mobs X [Default: -7]", -7, -16, 16, function(value)
         getgenv().mobdis3 = value
     end)
-    getgenv().mobdis4 = 8
-    Main:addSlider("Distance Between Mobs Y [Default: 8]", 8, -16, 16, function(value)
+    getgenv().mobdis4 = 0
+    Main:addSlider("Distance Between Mobs Y [Default: 0]", 0, -16, 16, function(value)
         getgenv().mobdis4 = value
     end)
 --Section 2 | MISC 
