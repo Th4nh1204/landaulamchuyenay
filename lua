@@ -5,6 +5,9 @@ function Reloadgui()
             v:Destroy()
         end
     end
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
     local function customTween(input, studspersecond, offset)
         local char = game:GetService("Players").LocalPlayer.Character;
         local input = input or error("input is nil");
@@ -42,6 +45,12 @@ function Reloadgui()
         twn:Play();
         twn.Completed:Wait();
      end;
+     -- anti kick(AFK)
+     local VirtualUser = game:service'VirtualUser' 
+    game:service'Players'.LocalPlayer.Idled:connect(function()
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new())
+    end)
 -- init
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
 local venyx = library.new("T1m Hub", 5013109572,os.date())
@@ -760,7 +769,7 @@ getgenv().KillAuraType = "Fist"
     local page2 = venyx:addPage("Misc", 13677751482)
     local Misc = page2:addSection("Local Player")
     
-    Misc:addToggle("Semi Kamado [Only Demon]", false, function(value)
+    Misc:addToggle("Semi Kamado [Only Kamado]", false, function(value)
         if value then
             pcall(function()
                 getgenv().Kamado = true
