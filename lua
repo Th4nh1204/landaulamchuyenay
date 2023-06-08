@@ -616,9 +616,12 @@ end)
     Main:addSlider("Distance Between Mobs X [Default: 0]", 0, -16, 16, function(value)
         getgenv().mobdis = value
     end)
-    getgenv().mobdis2 = 12
-    Main:addSlider("Distance Between Mobs Y [Default: 12]", 12, -16, 16, function(value)
+    getgenv().mobdis2 = 11
+    Main:addSlider("Distance Between Mobs Y [Default: 11]", 11, -16, 16, function(value)
         getgenv().mobdis2 = value
+    end)
+    Main:addButton("Teleport To Shop Ouwigahara", function()
+        game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(game:GetService("Workspace").Map["Shop Room"].MeshPart.CFrame)
     end)
 --MUGEN TRAIN
     local Main = page:addSection("Mugen Train")
