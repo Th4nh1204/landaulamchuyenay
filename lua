@@ -72,8 +72,8 @@ Main:addToggle("Auto Farm Boss", nil, function(value)
     getgenv().AutoFarmBoss = value
 end)
 -- Kill Aura
-getgenv().KillAuraType = "Fist"
-    Main:addDropdown("Kill Aura Method", {"Fist", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
+getgenv().KillAuraType = "Combat"
+    Main:addDropdown("Kill Aura Method", {"Combat", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
         getgenv().KillAuraType = text 
 
         if getgenv().FistKillAura or getgenv().SwordKillAura or getgenv().WarFanKillAura or getgenv().ClawKillAura or getgenv().ScytheKillAura or getgenv().AutoBlock then
@@ -84,7 +84,7 @@ getgenv().KillAuraType = "Fist"
             getgenv().ScytheKillAura = false
             getgenv().AutoBlock = false
             task.wait(3)
-            if getgenv().KillAuraType == "Fist" then
+            if getgenv().KillAuraType == "Combat" then
                 getgenv().AutoBlock = true
                 getgenv().FistKillAura = true
                 getgenv().SwordKillAura = false
@@ -125,7 +125,7 @@ getgenv().KillAuraType = "Fist"
     Main:addToggle("Kill Aura", nil, function(value)
         if value then
             pcall(function()
-                if getgenv().KillAuraType == "Fist" then
+                if getgenv().KillAuraType == "Combat" then
                     getgenv().AutoBlock = true
                     getgenv().FistKillAura = true
                     getgenv().SwordKillAura = false
@@ -573,8 +573,8 @@ spawn(function()
     end
 end)
 -- Kill Aura
-getgenv().KillAuraType = "Fist"
-    Main:addDropdown("Kill Aura Method", {"Fist", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
+getgenv().KillAuraType = "Combat"
+    Main:addDropdown("Kill Aura Method", {"Combat", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
         getgenv().KillAuraType = text 
 
         if getgenv().FistKillAura or getgenv().SwordKillAura or getgenv().WarFanKillAura or getgenv().ClawKillAura or getgenv().ScytheKillAura or getgenv().AutoBlock then
@@ -585,7 +585,7 @@ getgenv().KillAuraType = "Fist"
             getgenv().ScytheKillAura = false
             getgenv().AutoBlock = false
             task.wait(3)
-            if getgenv().KillAuraType == "Fist" then
+            if getgenv().KillAuraType == "Combat" then
                 getgenv().AutoBlock = true
                 getgenv().FistKillAura = true
                 getgenv().SwordKillAura = false
@@ -626,7 +626,7 @@ getgenv().KillAuraType = "Fist"
     Main:addToggle("Kill Aura", nil, function(value)
         if value then
             pcall(function()
-                if getgenv().KillAuraType == "Fist" then
+                if getgenv().KillAuraType == "Combat" then
                     getgenv().AutoBlock = true
                     getgenv().FistKillAura = true
                     getgenv().SwordKillAura = false
@@ -717,8 +717,8 @@ Main:addToggle("Auto Farm", nil, function(value)
 end)
 
 -- Kill Aura
-getgenv().KillAuraType = "Fist"
-    Main:addDropdown("Kill Aura Method", {"Fist", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
+getgenv().KillAuraType = "Combat"
+    Main:addDropdown("Kill Aura Method", {"Combat", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
         getgenv().KillAuraType = text 
 
         if getgenv().FistKillAura or getgenv().SwordKillAura or getgenv().WarFanKillAura or getgenv().ClawKillAura or getgenv().ScytheKillAura or getgenv().AutoBlock then
@@ -729,7 +729,7 @@ getgenv().KillAuraType = "Fist"
             getgenv().ScytheKillAura = false
             getgenv().AutoBlock = false
             task.wait(3)
-            if getgenv().KillAuraType == "Fist" then
+            if getgenv().KillAuraType == "Combat" then
                 getgenv().AutoBlock = true
                 getgenv().FistKillAura = true
                 getgenv().SwordKillAura = false
@@ -770,7 +770,7 @@ getgenv().KillAuraType = "Fist"
     Main:addToggle("Kill Aura", nil, function(value)
         if value then
             pcall(function()
-                if getgenv().KillAuraType == "Fist" then
+                if getgenv().KillAuraType == "Combat" then
                     getgenv().AutoBlock = true
                     getgenv().FistKillAura = true
                     getgenv().SwordKillAura = false
