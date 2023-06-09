@@ -40,7 +40,7 @@ local LocalPlayer = Players.LocalPlayer
             return error("wrong format used");
         end;
         
-        Time = (char.HumanoidRootPart.Position - (vec3 or input.Position)).magnitude/700;
+        Time = (char.HumanoidRootPart.Position - (vec3 or input.Position)).magnitude/1500;
         local twn = game.TweenService:Create(char.HumanoidRootPart, TweenInfo.new(Time,Enum.EasingStyle.Linear), {CFrame = (cframe or input.CFrame) * offset});
         twn:Play();
         twn.Completed:Wait();
@@ -393,7 +393,7 @@ end)
     end)
 
 spawn(function()
-    local cdforsword = 2
+    local cdforsword = 1.75
     while task.wait() do
         if getgenv().SwordKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -429,7 +429,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 2
+    local cdforsword = 1.75
     while task.wait() do
         if getgenv().FistKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -465,7 +465,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 2
+    local cdforsword = 1.75
     while task.wait() do
         if getgenv().WarFanKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -501,7 +501,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 2
+    local cdforsword = 1.75
     while task.wait() do
         if getgenv().ClawKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -537,7 +537,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 2
+    local cdforsword = 1.75
     while task.wait() do
         if getgenv().ScytheKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -699,16 +699,16 @@ Main:addToggle("Auto Block", nil, function(value)
         end)
     end
 end) 
-    getgenv().mobdis = 0
-    Main:addSlider("Distance Between Mobs X [Default: 0]", 0, -20, 20, function(value)
+    getgenv().mobdis = -7
+    Main:addSlider("Distance Between Mobs X [Default: -7]", -7, -20, 20, function(value)
         getgenv().mobdis = value
     end)
-    getgenv().mobdis2 = 17
-    Main:addSlider("Distance Between Mobs Y [Default: 17]", 17, -20, 20, function(value)
+    getgenv().mobdis2 = 11
+    Main:addSlider("Distance Between Mobs Y [Default: 11]", 11, -20, 20, function(value)
         getgenv().mobdis2 = value
     end)
     Main:addButton("Teleport To Shop Ouwigahara", function()
-        game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(game:GetService("Workspace").Map["Shop Room"].MeshPart.CFrame)
+        game:GetService("ReplicatedStorage"):WaitForChild("TeleportToShop"):FireServer()
     end)
 --MUGEN TRAIN
     local Main = page:addSection("Mugen Train")
