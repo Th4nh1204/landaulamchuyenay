@@ -702,11 +702,11 @@ Main:addToggle("Auto Block", nil, function(value)
     end
 end) 
     getgenv().mobdis = -11
-    Main:addSlider("Distance Between Mobs X [Default: 0]", 0, -20, 20, function(value)
+    Main:addSlider("Distance Between Mobs X [Default: -11]", -11, -20, 20, function(value)
         getgenv().mobdis = value
     end)
     getgenv().mobdis2 = 11
-    Main:addSlider("Distance Between Mobs Y [Default: -15]", -15, -20, 20, function(value)
+    Main:addSlider("Distance Between Mobs Y [Default: 11]", 11, -20, 20, function(value)
         getgenv().mobdis2 = value
     end)
     Main:addButton("Teleport To Shop Ouwigahara", function()
