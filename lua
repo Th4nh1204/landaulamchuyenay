@@ -66,6 +66,8 @@ Main:addButton("Redeem Code", function()
     game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksForLikes600K")
     wait(10)
     game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksForLikes600K2")
+    wait(11)
+    game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("350Mvisits")
 end)
 
 Main:addToggle("Auto Farm Boss", nil, function(value)
@@ -229,7 +231,7 @@ spawn(function()
     
         if closestBoss == nil and closestModel then
             customTween2({closestModel.WorldPivot.Position})
-            task.wait(0)
+            task.wait()
         else
             return closestBoss
         end
@@ -245,9 +247,9 @@ spawn(function()
                     local bossPosition = Boss.HumanoidRootPart.Position
                     local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                     local distance = (bossPosition - playerPosition).magnitude
-                    if distance > 200 then
+                    if distance > 250 then
                         customTween2({bossPosition})
-                        task.wait(2)
+                        task.wait()
                     else
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = behind
                         game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position, Boss.HumanoidRootPart.Position)
@@ -393,7 +395,7 @@ end)
     end)
 
 spawn(function()
-    local cdforsword = 1.75
+    local cdforsword = 1.6
     while task.wait() do
         if getgenv().SwordKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -429,7 +431,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.75
+    local cdforsword = 1.6
     while task.wait() do
         if getgenv().FistKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -465,7 +467,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.75
+    local cdforsword = 1.6
     while task.wait() do
         if getgenv().WarFanKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -501,7 +503,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.75
+    local cdforsword = 1.6
     while task.wait() do
         if getgenv().ClawKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -537,7 +539,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.75
+    local cdforsword = 1.6
     while task.wait() do
         if getgenv().ScytheKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -699,11 +701,11 @@ Main:addToggle("Auto Block", nil, function(value)
         end)
     end
 end) 
-    getgenv().mobdis = 0
+    getgenv().mobdis = -11
     Main:addSlider("Distance Between Mobs X [Default: 0]", 0, -20, 20, function(value)
         getgenv().mobdis = value
     end)
-    getgenv().mobdis2 = -15
+    getgenv().mobdis2 = 11
     Main:addSlider("Distance Between Mobs Y [Default: -15]", -15, -20, 20, function(value)
         getgenv().mobdis2 = value
     end)
@@ -944,16 +946,12 @@ getgenv().KillAuraType = "Combat"
         getgenv().TotalChest = 0
         getgenv().TotalItem = 0
     
-        while task.wait(0.7) do
+        while task.wait(0) do
             if getgenv().AutoLoot then
                 pcall(function()
                     local chests = workspace:WaitForChild("Debree"):GetChildren()
-    
                     for i, v in pairs(chests) do
                         if v.Name == "Loot_Chest" and v:FindFirstChild("Root") and v:FindFirstChild("Drops") then
-                            if (v.Root.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude < 30 then
-                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Root.CFrame 
-                                print("CHEST FOUND")
                                 getgenv().TotalChest = getgenv().TotalChest + 1
                                 for i, v1 in pairs(v.Drops:GetChildren()) do
                                     local args = {
@@ -963,10 +961,9 @@ getgenv().KillAuraType = "Combat"
                                     task.wait()
                                     getgenv().TotalItem = getgenv().TotalItem + 1
                                 end
-                                task.wait(0.7)
+                                task.wait(0)
                                 v:Destroy()
                             end
-                        end
                     end
                 end)
             end
