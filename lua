@@ -247,7 +247,7 @@ spawn(function()
                     local bossPosition = Boss.HumanoidRootPart.Position
                     local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                     local distance = (bossPosition - playerPosition).magnitude
-                    if distance > 250 then
+                    if distance > 200 then
                         customTween2({bossPosition})
                         task.wait()
                     else
