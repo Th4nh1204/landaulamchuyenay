@@ -467,7 +467,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.85
+    local cdforsword = 2
     while task.wait() do
         if getgenv().WarFanKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -503,7 +503,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.85
+    local cdforsword = 2
     while task.wait() do
         if getgenv().ClawKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
