@@ -373,6 +373,7 @@ while task.wait() do
     end
 end
 end)
+
     spawn(function()
         getgenv().Howlongsincelastfired = tick()
         remoteName = "Handle_Initiate_S"
@@ -467,7 +468,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 2
+    local cdforsword = 2 
     while task.wait() do
         if getgenv().WarFanKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -890,10 +891,24 @@ getgenv().KillAuraType = "Combat"
         end
     end)
 
+    Misc:addToggle("Semi Zennitsu [Only Human]", false, function(value)
+        if value then
+            pcall(function()
+                getgenv().Zennitsu = true
+                game:GetService("ReplicatedStorage").Remotes.thundertang123:FireServer(true)
+            end)
+        elseif not value then
+            pcall(function()
+                getgenv().Zennitsu = false
+                game:GetService("ReplicatedStorage").Remotes.thundertang123:FireServer(false)
+            end)
+        end
+    end)
+
     Misc:addToggle("Regen HP [Only Human]", false, function(value)
         if value then
             pcall(function()
-                getgenv().RegenBreathing = true
+                getgenv().RegenBreathing = true 
             game:GetService("ReplicatedStorage").Remotes.regeneration_breathing_remote:FireServer(true)
             end)
         elseif not value then
@@ -922,6 +937,127 @@ getgenv().KillAuraType = "Combat"
 --Telport Muzan
     Misc:addButton("Teleport To Muzan", function()
         game.Players.LocalPlayer.Character:MoveTo(game:GetService("Workspace").Muzan.SpawnPos.Value) 
+    end)
+--Quest Soryu
+spawn(function()
+    function checkForAkaza()
+        local Bosses = workspace.Mobs.Bosses.Akaza:GetChildren()
+        local closestBoss = nil
+        local closestDistance = math.huge
+        local playerPosition = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position
+        local closestModel
+    
+        for i, v in pairs(Bosses) do
+            if v:FindFirstChildWhichIsA("Model") then
+                local Boss = v:FindFirstChildWhichIsA("Model")
+                closestModel = Boss
+                if Boss:FindFirstChild("HumanoidRootPart") then
+                    local bossPosition = Boss.HumanoidRootPart.Position
+                    local distance = (bossPosition - playerPosition).magnitude
+                    if distance < closestDistance then
+                        closestDistance = distance
+                        closestBoss = Boss
+                    end
+                end
+            end
+        end
+    
+        if closestBoss == nil and closestModel then
+            customTween({closestModel.WorldPivot.Position})
+            task.wait()
+        else
+            return closestBoss
+        end
+    end
+    while task.wait() do
+        if getgenv().AutoBossAkaza then
+            pcall(function()
+                if not getgenv().AutoBossAkaza then return end
+                local Boss = checkForAkaza()
+                while Boss and Boss:FindFirstChild("Humanoid") and Boss:FindFirstChild("Humanoid").Health > 0 do
+                    task.wait()
+                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis2, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis
+                    local bossPosition = Boss.HumanoidRootPart.Position
+                    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                    local distance = (bossPosition - playerPosition).magnitude
+                    if distance > 200 then
+                        customTween({bossPosition})
+                        task.wait()
+                    else
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = behind
+                        game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position, Boss.HumanoidRootPart.Position)
+                    end
+                end
+                task.wait()
+            end)
+            task.wait()
+        end
+    end
+end)
+spawn(function()
+    function checkForMob20KDMG()
+        local Bosses = workspace.Mobs.Bosses.Akaza:GetChildren()
+        local closestBoss = nil
+        local closestDistance = math.huge
+        local playerPosition = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position
+        local closestModel
+    
+        for i, v in pairs(Bosses) do
+            if v:FindFirstChildWhichIsA("Model") then
+                local Boss = v:FindFirstChildWhichIsA("Model")
+                closestModel = Boss
+                if Boss:FindFirstChild("HumanoidRootPart") then
+                    local bossPosition = Boss.HumanoidRootPart.Position
+                    local distance = (bossPosition - playerPosition).magnitude
+                    if distance < closestDistance then
+                        closestDistance = distance
+                        closestBoss = Boss
+                    end
+                end
+            end
+        end
+    
+        if closestBoss == nil and closestModel then
+            customTween({closestModel.WorldPivot.Position})
+            task.wait()
+        else
+            return closestBoss
+        end
+    end
+    while task.wait() do
+        if getgenv().AutoMob20KDMG then
+            pcall(function()
+                if not getgenv().AutoMob20KDMG then return end
+                local Boss = checkForMob20KDMG()
+                while Boss and Boss:FindFirstChild("Humanoid") and Boss:FindFirstChild("Humanoid").Health > 0 do
+                    task.wait()
+                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis2, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis
+                    local bossPosition = Boss.HumanoidRootPart.Position
+                    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                    local distance = (bossPosition - playerPosition).magnitude
+                    if distance > 200 then
+                        customTween({bossPosition})
+                        task.wait()
+                    else
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = behind
+                        game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position, Boss.HumanoidRootPart.Position)
+                    end
+                end
+                task.wait()
+            end)
+            task.wait()
+        end
+    end
+end)
+    local Misc = page2:addSection("Quest Soryu")
+    Misc:addButton("Teleport To Soryu Book", false, function(value)
+        
+    end)
+    Misc:addToggle("Auto Farm Akaza", false, function(value)
+        getgenv().AutoBossAkaza = value
+    end)
+    Misc:addToggle("Auto Farm 20K Damage", false, function(value)
+        getgenv().AutoMob20KDMG = value
     end)
 --Other
     local Misc = page2:addSection("Other")
@@ -972,28 +1108,7 @@ getgenv().KillAuraType = "Combat"
     Misc:addToggle("Test", false, function(value)
         print("Quack Quack Quack", value)
     end)
-    spawn(function()
-        while task.wait() do
-            if getgenv().Noclip == true then
-                for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-                    if v.ClassName == "Part" or v.ClassName == "MeshPart" then
-                        v.CanCollide = false
-                    end
-                end
-            end
-        end
-    end)
-    Misc:addToggle("Noclip", nil, function(value)
-        getgenv().Noclip = value
-        wait(0.5)
-        if not getgenv().Noclip then
-            for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-                if v.ClassName == "Part" or v.ClassName == "MeshPart" then
-                    v.CanCollide = true
-                end
-            end
-        end
-    end)
+    
     venyx:SelectPage(venyx.pages[1], true)
 end
 Reloadgui()
