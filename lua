@@ -946,7 +946,7 @@ getgenv().KillAuraType = "Combat"
         getgenv().TotalChest = 0
         getgenv().TotalItem = 0
     
-        while task.wait(0) do
+        while task.wait(0.7) do
             if getgenv().AutoLoot then
                 pcall(function()
                     local chests = workspace:WaitForChild("Debree"):GetChildren()
@@ -961,7 +961,7 @@ getgenv().KillAuraType = "Combat"
                                     task.wait()
                                     getgenv().TotalItem = getgenv().TotalItem + 1
                                 end
-                                task.wait(0)
+                                task.wait(0.7)
                                 v:Destroy()
                             end
                     end
