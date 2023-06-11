@@ -704,8 +704,8 @@ end)
     Main:addSlider("Distance Between Mobs X [Default: 0]", 0, -20, 20, function(value)
         getgenv().mobdis = value
     end)
-    getgenv().mobdis2 = -15
-    Main:addSlider("Distance Between Mobs Y [Default: -15]", -15, -20, 20, function(value)
+    getgenv().mobdis2 = 15
+    Main:addSlider("Distance Between Mobs Y [Default: 15]", 15, -20, 20, function(value)
         getgenv().mobdis2 = value
     end)
     Main:addButton("Teleport To Shop Ouwigahara", function()
