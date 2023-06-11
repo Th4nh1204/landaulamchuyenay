@@ -957,6 +957,11 @@ wait(22)
         end
     end)
 
+    
+    Main:addSlider("Speed [Default: 30]", 30, 0, 300, function(value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end)
+
     local Misc = page2:addSection("God Mode")
     Misc:addToggle("God Mode [Only Douma]", false, function(value)
         if value then
