@@ -63,11 +63,9 @@ Main:addButton("Reload GUI", function()
 end)
 
 Main:addButton("Redeem Code", function()
-    game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksForLikes600K")
+    game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksFor350MVisits")
     wait(10)
-    game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksForLikes600K2")
-    wait(11)
-    game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("350Mvisits")
+    game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksFor350MVisits2")
 end)
 
 Main:addToggle("Auto Farm Boss", nil, function(value)
@@ -943,6 +941,20 @@ wait(22)
     end
     end)
 
+    Misc:addToggle("No Sun Damage", false, function(value)
+        if value then
+            pcall(function()
+                getgenv().SunDamage = true
+                game:GetService("Players").LocalPlayer.PlayerScripts["Small_Scripts"].Gameplay["Sun_Damage"].Disabled = true
+            end)
+        elseif not value then
+            pcall(function()
+                getgenv().SunDamage = false
+                game:GetService("Players").LocalPlayer.PlayerScripts["Small_Scripts"].Gameplay["Sun_Damage"].Disabled = false
+            end)
+        end
+    end)
+
     local Misc = page2:addSection("God Mode")
     Misc:addToggle("God Mode [Only Douma]", false, function(value)
         if value then
@@ -1144,9 +1156,6 @@ end)
                 end)
             end
         end
-    end)
-    Misc:addToggle("Test", false, function(value)
-        print("Quack Quack Quack", value)
     end)
     
     venyx:SelectPage(venyx.pages[1], true)
