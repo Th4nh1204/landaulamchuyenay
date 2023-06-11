@@ -932,6 +932,44 @@ getgenv().KillAuraType = "Combat"
             end)
         end
     end)
+
+    Misc:addToggle("Auto War Drums", false, function(value)
+        if value then
+            while value == true do
+            local args = {[1] = true}
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("war_Drums_remote"):FireServer(unpack(args))
+wait(22)
+        end 
+    end
+    end)
+
+    local Misc = page2:addSection("God Mode")
+    Misc:addToggle("God Mode [Only Douma]", false, function(value)
+        if value then
+            while value == true do
+            local args = {
+                [1] = "skil_ting_asd",
+                [2] = game:GetService("Players").LocalPlayer,
+                [3] = "ice_demon_art_bodhisatva",
+                [4] = 1}
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))            
+            wait(2)
+        end
+    end
+    end)
+    Misc:addToggle("God Mode [Only Akaza]", false, function(value)
+        if value then
+            while value == true do
+            local args = {
+                [1] = "skil_ting_asd",
+                [2] = game:GetService("Players").LocalPlayer,
+                [3] = "akaza_bda_compass_needle",
+                [4] = 1}
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))            
+            wait(2)
+        end
+    end
+    end)
      --Muzan
     local Misc = page2:addSection("Quest Muzan")
 --Telport Muzan
@@ -939,6 +977,8 @@ getgenv().KillAuraType = "Combat"
         game.Players.LocalPlayer.Character:MoveTo(game:GetService("Workspace").Muzan.SpawnPos.Value) 
     end)
 --Quest Soryu
+getgenv().mobdis5 = 0
+getgenv().mobdis6 = 7
 spawn(function()
     function checkForAkaza()
         local Bosses = workspace.Mobs.Bosses.Akaza:GetChildren()
@@ -963,7 +1003,7 @@ spawn(function()
         end
     
         if closestBoss == nil and closestModel then
-            customTween({closestModel.WorldPivot.Position})
+            customTween2({closestModel.WorldPivot.Position})
             task.wait()
         else
             return closestBoss
@@ -976,12 +1016,12 @@ spawn(function()
                 local Boss = checkForAkaza()
                 while Boss and Boss:FindFirstChild("Humanoid") and Boss:FindFirstChild("Humanoid").Health > 0 do
                     task.wait()
-                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis2, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis
+                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis6, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis5
                     local bossPosition = Boss.HumanoidRootPart.Position
                     local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                     local distance = (bossPosition - playerPosition).magnitude
                     if distance > 200 then
-                        customTween({bossPosition})
+                        customTween2({bossPosition})
                         task.wait()
                     else
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = behind
@@ -996,7 +1036,7 @@ spawn(function()
 end)
 spawn(function()
     function checkForMob20KDMG()
-        local Bosses = workspace.Mobs.Bosses.Akaza:GetChildren()
+        local Bosses = workspace.Mobs.Village_1_quest_bandits:GetChildren()
         local closestBoss = nil
         local closestDistance = math.huge
         local playerPosition = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position
@@ -1018,7 +1058,7 @@ spawn(function()
         end
     
         if closestBoss == nil and closestModel then
-            customTween({closestModel.WorldPivot.Position})
+            customTween2({closestModel.WorldPivot.Position})
             task.wait()
         else
             return closestBoss
@@ -1031,12 +1071,12 @@ spawn(function()
                 local Boss = checkForMob20KDMG()
                 while Boss and Boss:FindFirstChild("Humanoid") and Boss:FindFirstChild("Humanoid").Health > 0 do
                     task.wait()
-                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis2, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis
+                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis6, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis5
                     local bossPosition = Boss.HumanoidRootPart.Position
                     local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                     local distance = (bossPosition - playerPosition).magnitude
                     if distance > 200 then
-                        customTween({bossPosition})
+                        customTween2({bossPosition})
                         task.wait()
                     else
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = behind
@@ -1050,8 +1090,8 @@ spawn(function()
     end
 end)
     local Misc = page2:addSection("Quest Soryu")
-    Misc:addButton("Teleport To Soryu Book", false, function(value)
-        
+    Misc:addButton("Teleport To Soryu Book", false, function()
+        customTween2(2162.71, 446.376, -870.202)
     end)
     Misc:addToggle("Auto Farm Akaza", false, function(value)
         getgenv().AutoBossAkaza = value
