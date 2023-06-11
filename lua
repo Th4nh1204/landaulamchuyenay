@@ -64,7 +64,7 @@ end)
 
 Main:addButton("Redeem Code", function()
     game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksFor350MVisits")
-    wait(10)
+    wait(12)
     game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksFor350MVisits2")
 end)
 
@@ -861,7 +861,7 @@ getgenv().KillAuraType = "Combat"
     end)
 --Section 2 | MISC 
     local page2 = venyx:addPage("Misc", 13677751482)
-    local Misc = page2:addSection("Local Player")
+    local Misc = page2:addSection("Local Player - Clan")
     
     Misc:addToggle("Semi Kamado [Only Kamado]", false, function(value)
         if value then
@@ -904,7 +904,7 @@ getgenv().KillAuraType = "Combat"
             end)
         end
     end)
-
+    local Misc = page2:addSection("Local Player")
     Misc:addToggle("Regen HP [Only Human]", false, function(value)
         if value then
             pcall(function()
@@ -955,11 +955,6 @@ wait(22)
                 game:GetService("Players").LocalPlayer.PlayerScripts["Small_Scripts"].Gameplay["Sun_Damage"].Disabled = false
             end)
         end
-    end)
-
-    
-    Main:addSlider("Speed [Default: 30]", 30, 0, 300, function(value)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
     end)
 
     local Misc = page2:addSection("God Mode")
