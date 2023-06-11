@@ -1136,7 +1136,7 @@ end)
         getgenv().TotalChest = 0
         getgenv().TotalItem = 0
     
-        while task.wait(0.7) do
+        while task.wait() do
             if getgenv().AutoLoot then
                 pcall(function()
                     local chests = workspace:WaitForChild("Debree"):GetChildren()
@@ -1151,7 +1151,7 @@ end)
                                     task.wait()
                                     getgenv().TotalItem = getgenv().TotalItem + 1
                                 end
-                                task.wait(0.7)
+                                task.wait(0)
                                 v:Destroy()
                             end
                     end
