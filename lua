@@ -204,6 +204,7 @@ local Main = page:addSection("Ouwigahara")
 Main:addToggle("Auto Farm", nil, function(value)
     getgenv().AutoFarmGahara = value
 end)
+
 spawn(function()
     function checkForMob()
         local Bosses = workspace.Mobs:GetChildren()
@@ -245,7 +246,7 @@ spawn(function()
                     local bossPosition = Boss.HumanoidRootPart.Position
                     local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                     local distance = (bossPosition - playerPosition).magnitude
-                    if distance > 200 then
+                    if distance > 100 then
                         customTween2({bossPosition})
                         task.wait()
                     else
@@ -284,7 +285,7 @@ spawn(function()
     
         if closestBoss == nil and closestModel then
             customTween2({closestModel.WorldPivot.Position})
-            task.wait(0)
+            task.wait()
         else
             return closestBoss
         end
@@ -341,7 +342,7 @@ spawn(function()
     
         if closestBoss == nil and closestModel then
             customTween({closestModel.WorldPivot.Position})
-            task.wait(0)
+            task.wait()
         else
             return closestBoss
         end
@@ -394,7 +395,7 @@ end)
     end)
 
 spawn(function()
-    local cdforsword = 1.75
+    local cdforsword = 2
     while task.wait() do
         if getgenv().SwordKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -430,7 +431,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.75
+    local cdforsword = 1.80
     while task.wait() do
         if getgenv().FistKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -458,7 +459,7 @@ spawn(function()
                         
                         game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
                     end
-                    task.wait(0.1)
+                    task.wait(0.5)
                     getgenv().Howlongsincelastfired = tick()    
                 end
             end)
@@ -704,14 +705,15 @@ end)
     Main:addSlider("Distance Between Mobs X [Default: 0]", 0, -20, 20, function(value)
         getgenv().mobdis = value
     end)
-    getgenv().mobdis2 = 15
-    Main:addSlider("Distance Between Mobs Y [Default: 15]", 15, -20, 20, function(value)
+    getgenv().mobdis2 = 7.5
+    Main:addSlider("Distance Between Mobs Y [Default: 7.5]", 7.5, -20, 20, function(value)
         getgenv().mobdis2 = value
     end)
     Main:addButton("Teleport To Shop Ouwigahara", function()
         game:GetService("ReplicatedStorage"):WaitForChild("TeleportToShop"):FireServer()
     end)
 --MUGEN TRAIN
+
     local Main = page:addSection("Mugen Train")
 Main:addToggle("Auto Farm", nil, function(value)
     getgenv().AutoFarmMugen = value
@@ -1157,7 +1159,11 @@ end)
             end
         end
     end)
+
+    
     
     venyx:SelectPage(venyx.pages[1], true)
 end
 Reloadgui()
+
+--toan bo code deu cho newbie hoc tap, chac chan 100% khong hoan hao nhung se huu dung voi newbie
