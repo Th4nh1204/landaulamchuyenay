@@ -861,7 +861,7 @@ getgenv().KillAuraType = "Combat"
     end)
 --Section 2 | MISC 
     local page2 = venyx:addPage("Misc", 13677751482)
-    local Misc = page2:addSection("Local Player - Clan")
+    local Misc = page2:addSection("Local Player - Human")
     
     Misc:addToggle("Semi Kamado [Only Kamado]", false, function(value)
         if value then
@@ -904,7 +904,6 @@ getgenv().KillAuraType = "Combat"
             end)
         end
     end)
-    local Misc = page2:addSection("Local Player")
     Misc:addToggle("Regen HP [Only Human]", false, function(value)
         if value then
             pcall(function()
@@ -932,7 +931,7 @@ getgenv().KillAuraType = "Combat"
             end)
         end
     end)
-
+    local Misc = page2:addSection("Local Player - Demon")
     Misc:addToggle("Auto War Drums", false, function(value)
         if value then
             while value == true do
