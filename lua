@@ -202,6 +202,8 @@ end)
 -- Ouwigahara
 local Main = page:addSection("Ouwigahara")
 Main:addToggle("Auto Farm", nil, function(value)
+    local args = {[1] = "Normal"}
+game:GetService("ReplicatedStorage"):WaitForChild("TeleportCirclesEvent"):FireServer(unpack(args))
     getgenv().AutoFarmGahara = value
 end)
 
@@ -395,7 +397,7 @@ end)
     end)
 
 spawn(function()
-    local cdforsword = 2
+    local cdforsword = 1.8
     while task.wait() do
         if getgenv().SwordKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -431,7 +433,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.80
+    local cdforsword = 1.8
     while task.wait() do
         if getgenv().FistKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -467,7 +469,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.9
+    local cdforsword = 1.97
     while task.wait() do
         if getgenv().WarFanKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -503,7 +505,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.9
+    local cdforsword = 1.97
     while task.wait() do
         if getgenv().ClawKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -539,7 +541,7 @@ spawn(function()
     end
 end)
 spawn(function()
-    local cdforsword = 1.75
+    local cdforsword = 1.97
     while task.wait() do
         if getgenv().ScytheKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
@@ -904,7 +906,7 @@ getgenv().KillAuraType = "Combat"
             end)
         end
     end)
-    Misc:addToggle("Regen HP [Only Human]", false, function(value)
+    Misc:addToggle("Regen HP [Human/Demon]", false, function(value)
         if value then
             pcall(function()
                 getgenv().RegenBreathing = true 
@@ -1104,7 +1106,6 @@ spawn(function()
 end)
     local Misc = page2:addSection("Quest Soryu")
     Misc:addButton("Teleport To Soryu Book", false, function()
-        customTween2(2162.71, 446.376, -870.202)
     end)
     Misc:addToggle("Auto Farm Akaza", false, function(value)
         getgenv().AutoBossAkaza = value
