@@ -1,11 +1,11 @@
-
+--reload gui
 function Reloadgui()
     for i, v in pairs(game:GetService("CoreGui"):GetChildren()) do
         if v.Name == "T1m Hub" then
             v:Destroy()
         end
     end
-
+--tween 
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
     local function customTween(input, studspersecond, offset)
@@ -51,6 +51,42 @@ local LocalPlayer = Players.LocalPlayer
         VirtualUser:CaptureController()
         VirtualUser:ClickButton2(Vector2.new())
     end)
+    --No Clip
+spawn(function()
+    game:GetService("RunService").Stepped:Connect(function()
+        if getgenv().AutoFarmBoss or getgenv().AutoFarmGahara or getgenv().idletween then
+            for _, v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
+                if v:IsA("BasePart") then
+                    v.CanCollide = false    
+                end
+                if v:IsA("Humanoid") then
+                    v:ChangeState(11)
+                end
+            end
+        end
+    end)
+end)
+--kill aura
+spawn(function()
+    getgenv().Howlongsincelastfired = tick()
+    remoteName = "Handle_Initiate_S"
+    remoteType = "FireServer"
+    
+    local meta = getrawmetatable(game)
+    setreadonly(meta, false)
+    local old_meta = meta.__namecall
+    
+    meta.__namecall = function(self, ...)
+       local method = getnamecallmethod()
+    
+       if method == remoteType then
+           if tostring(self, unpack({...})) == remoteName then
+               getgenv().Howlongsincelastfired = tick()
+           end
+       end
+       return old_meta(self, ...)
+    end
+end)
 -- init
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/GreenDeno/Venyx-UI-Library/main/source.lua"))()
 local venyx = library.new("T1m Hub", 5013109572,os.date())
@@ -67,256 +103,7 @@ Main:addButton("Redeem Code", function()
     wait(12)
     game:GetService("ReplicatedStorage").Remotes.send_code_to_server:FireServer("ThanksFor350MVisits2")
 end)
-
-Main:addToggle("Auto Farm Boss", nil, function(value)
-    getgenv().AutoFarmBoss = value
-end)
--- Kill Aura
-getgenv().KillAuraType = "Combat"
-    Main:addDropdown("Kill Aura Method", {"Combat", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
-        getgenv().KillAuraType = text 
-
-        if getgenv().FistKillAura or getgenv().SwordKillAura or getgenv().WarFanKillAura or getgenv().ClawKillAura or getgenv().ScytheKillAura or getgenv().AutoBlock then
-            getgenv().SwordKillAura = false
-            getgenv().FistKillAura = false
-            getgenv().WarFanKillAura = false
-            getgenv().ClawKillAura = false
-            getgenv().ScytheKillAura = false
-            getgenv().AutoBlock = false
-            task.wait(3)
-            if getgenv().KillAuraType == "Combat" then
-                getgenv().AutoBlock = true
-                getgenv().FistKillAura = true
-                getgenv().SwordKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Sword" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = true
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "WarFan" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = true
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Claw" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = true
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Scythe" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = true
-            end
-        end
-    end)
-    Main:addToggle("Kill Aura", nil, function(value)
-        if value then
-            pcall(function()
-                if getgenv().KillAuraType == "Combat" then
-                    getgenv().AutoBlock = true
-                    getgenv().FistKillAura = true
-                    getgenv().SwordKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Sword" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = true
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "WarFan" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = true
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Claw" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = true
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Scythe" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = true
-                end
-            end)
-        elseif not value then
-            pcall(function()
-                getgenv().AutoBlock = false
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            end)
-        end
-    end)
--- Auto BLock
-Main:addToggle("Auto Block", nil, function(value)
-    if value then
-        pcall(function()
-            getgenv().AutoBlock = true
-            local args = {
-                [1] = "add_blocking",
-                [2] = "Players."..game.Players.LocalPlayer.Name..".PlayerScripts.Skills_Modules.Combat.Sword//Block",
-                [3] = 1,
-                [4] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name),
-                [5] = 1
-            }
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
-        end)
-    elseif not value then
-        pcall(function()
-            getgenv().AutoBlock = false
-            local args = {
-                [1] = "remove_blocking",
-                [2] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name)
-            }
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
-        end)
-    end
-end) 
-
--- Ouwigahara
-local Main = page:addSection("Ouwigahara")
-Main:addToggle("Auto Farm", nil, function(value)
-    local args = {[1] = "Normal"}
-game:GetService("ReplicatedStorage"):WaitForChild("TeleportCirclesEvent"):FireServer(unpack(args))
-    getgenv().AutoFarmGahara = value
-end)
-
-spawn(function()
-    function checkForMob()
-        local Bosses = workspace.Mobs:GetChildren()
-        local closestBoss = nil
-        local closestDistance = math.huge
-        local playerPosition = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position
-        local closestModel
-    
-        for i, v in pairs(Bosses) do
-            if v:FindFirstChildWhichIsA("Model") then
-                local Boss = v:FindFirstChildWhichIsA("Model")
-                closestModel = Boss
-                if Boss:FindFirstChild("HumanoidRootPart") then
-                    local bossPosition = Boss.HumanoidRootPart.Position
-                    local distance = (bossPosition - playerPosition).magnitude
-                    if distance < closestDistance then
-                        closestDistance = distance
-                        closestBoss = Boss
-                    end
-                end
-            end
-        end
-    
-        if closestBoss == nil and closestModel then
-            customTween2({closestModel.WorldPivot.Position})
-            task.wait()
-        else
-            return closestBoss
-        end
-    end
-    while task.wait() do
-        if getgenv().AutoFarmGahara then
-            pcall(function()
-                if not getgenv().AutoFarmGahara then return end
-                local Boss = checkForMob()
-                while Boss and Boss:FindFirstChild("Humanoid") and Boss:FindFirstChild("Humanoid").Health > 0 do
-                    task.wait()
-                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis2, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis
-                    local bossPosition = Boss.HumanoidRootPart.Position
-                    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-                    local distance = (bossPosition - playerPosition).magnitude
-                    if distance > 100 then
-                        customTween2({bossPosition})
-                        task.wait()
-                    else
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = behind
-                        game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position, Boss.HumanoidRootPart.Position)
-                    end
-                end
-                task.wait()
-            end)
-            task.wait()
-        end
-    end
-end)
-spawn(function()
-    function checkForMob2()
-        local Bosses = workspace.Mobs:GetChildren()
-        local closestBoss = nil
-        local closestDistance = math.huge
-        local playerPosition = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position
-        local closestModel
-    
-        for i, v in pairs(Bosses) do
-            if v:FindFirstChildWhichIsA("Model") then
-                local Boss = v:FindFirstChildWhichIsA("Model")
-                closestModel = Boss
-                if Boss:FindFirstChild("HumanoidRootPart") then
-                    local bossPosition = Boss.HumanoidRootPart.Position
-                    local distance = (bossPosition - playerPosition).magnitude
-                    if distance < closestDistance then
-                        closestDistance = distance
-                        closestBoss = Boss
-                    end
-                end
-            end
-        end
-    
-        if closestBoss == nil and closestModel then
-            customTween2({closestModel.WorldPivot.Position})
-            task.wait()
-        else
-            return closestBoss
-        end
-    end
-    while task.wait() do
-        if getgenv().AutoFarmMugen then
-            pcall(function()
-                if not getgenv().AutoFarmMugen then return end
-                local Boss = checkForMob2()
-                while Boss and Boss:FindFirstChild("Humanoid") and Boss:FindFirstChild("Humanoid").Health > 0 do
-                    task.wait()
-                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis4, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis3
-                    local bossPosition = Boss.HumanoidRootPart.Position
-                    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-                    local distance = (bossPosition - playerPosition).magnitude
-                    if distance > 450 then
-                        customTween2({bossPosition})
-                        task.wait(4)
-                    else
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = behind
-                        game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position, Boss.HumanoidRootPart.Position)
-                    end
-                end
-                task.wait()
-            end)
-            task.wait()
-        end
-    end
-end)
+--Auto Farm Main
 spawn(function()
     function checkForBosses()
         local Bosses = workspace.Mobs.Bosses:GetChildren() 
@@ -374,32 +161,373 @@ while task.wait() do
     end
 end
 end)
+Main:addToggle("Auto Farm Boss", nil, function(value)
+    getgenv().AutoFarmBoss = value
+end)
+-- Kill Aura Main
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().SwordKillAuraMain and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "Sword_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "Sword_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.1)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().FistKillAuraMain and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "fist_combat"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "fist_combat"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.5)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().WarFanKillAuraMain and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "fans_combat_slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "fans_combat_slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.1)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().ClawKillAuraMain and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "claw_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "claw_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.1)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().ScytheKillAuraMain and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "Scythe_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "Scythe_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.1)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+getgenv().KillAuraTypeMain = "Combat"
+    Main:addDropdown("Kill Aura Method", {"Combat", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
+        getgenv().KillAuraTypeMain = text 
 
-    spawn(function()
-        getgenv().Howlongsincelastfired = tick()
-        remoteName = "Handle_Initiate_S"
-        remoteType = "FireServer"
-        
-        local meta = getrawmetatable(game)
-        setreadonly(meta, false)
-        local old_meta = meta.__namecall
-        
-        meta.__namecall = function(self, ...)
-           local method = getnamecallmethod()
-        
-           if method == remoteType then
-               if tostring(self, unpack({...})) == remoteName then
-                   getgenv().Howlongsincelastfired = tick()
-               end
-           end
-           return old_meta(self, ...)
+        if getgenv().FistKillAuraMain or getgenv().SwordKillAuraMain or getgenv().WarFanKillAuraMain or getgenv().ClawKillAuraMain or getgenv().ScytheKillAuraMain then
+            getgenv().SwordKillAuraMain = false
+            getgenv().FistKillAuraMain = false
+            getgenv().WarFanKillAuraMain = false
+            getgenv().ClawKillAuraMain = false
+            getgenv().ScytheKillAuraMain = false
+            task.wait(3)
+            if getgenv().KillAuraTypeMain == "Combat" then
+                getgenv().FistKillAuraMain = true
+                getgenv().SwordKillAuraMain = false
+                getgenv().WarFanKillAuraMain = false
+                getgenv().ClawKillAuraMain = false
+                getgenv().ScytheKillAuraMain = false
+            elseif getgenv().KillAuraTypeMain == "Sword" then
+                getgenv().SwordKillAuraMain = true
+                getgenv().FistKillAuraMain = false
+                getgenv().WarFanKillAuraMain = false
+                getgenv().ClawKillAuraMain = false
+                getgenv().ScytheKillAuraMain = false
+            elseif getgenv().KillAuraTypeMain == "WarFan" then
+                getgenv().SwordKillAuraMain = false
+                getgenv().FistKillAuraMain = false
+                getgenv().WarFanKillAuraMain = true
+                getgenv().ClawKillAuraMain = false
+                getgenv().ScytheKillAuraMain = false
+            elseif getgenv().KillAuraTypeMain == "Claw" then
+                getgenv().SwordKillAuraMain = false
+                getgenv().FistKillAuraMain = false
+                getgenv().WarFanKillAuraMain = false
+                getgenv().ClawKillAuraMain = true
+                getgenv().ScytheKillAuraMain = false
+            elseif getgenv().KillAuraTypeMain == "Scythe" then
+                getgenv().SwordKillAuraMain = false
+                getgenv().FistKillAuraMain = false
+                getgenv().WarFanKillAuraMain = false
+                getgenv().ClawKillAuraMain = false
+                getgenv().ScytheKillAuraMain = true
+            end
         end
     end)
+    Main:addToggle("Kill Aura", nil, function(value)
+        if value then
+            pcall(function()
+                if getgenv().KillAuraTypeMain == "Combat" then
+                    getgenv().FistKillAuraMain = true
+                    getgenv().SwordKillAuraMain = false
+                    getgenv().WarFanKillAuraMain = false
+                    getgenv().ClawKillAuraMain = false
+                    getgenv().ScytheKillAuraMain = false
+                elseif getgenv().KillAuraTypeMain == "Sword" then
+                    getgenv().SwordKillAuraMain = true
+                    getgenv().FistKillAuraMain = false
+                    getgenv().WarFanKillAuraMain = false
+                    getgenv().ClawKillAuraMain = false
+                    getgenv().ScytheKillAuraMain = false
+                elseif getgenv().KillAuraTypeMain == "WarFan" then
+                    getgenv().SwordKillAuraMain = false
+                    getgenv().FistKillAuraMain = false
+                    getgenv().WarFanKillAuraMain = true
+                    getgenv().ClawKillAuraMain = false
+                    getgenv().ScytheKillAuraMain = false
+                elseif getgenv().KillAuraTypeMain == "Claw" then
+                    getgenv().SwordKillAuraMain = false
+                    getgenv().FistKillAuraMain = false
+                    getgenv().WarFanKillAuraMain = false
+                    getgenv().ClawKillAuraMain = true
+                    getgenv().ScytheKillAuraMain = false
+                elseif getgenv().KillAuraTypeMain == "Scythe" then
+                    getgenv().SwordKillAuraMain = false
+                    getgenv().FistKillAuraMain = false
+                    getgenv().WarFanKillAuraMain = false
+                    getgenv().ClawKillAuraMain = false
+                    getgenv().ScytheKillAuraMain = true
+                end
+            end)
+        elseif not value then
+            pcall(function()
+                getgenv().SwordKillAuraMain = false
+                getgenv().FistKillAuraMain = false
+                getgenv().WarFanKillAuraMain = false
+                getgenv().ClawKillAuraMain = false
+                getgenv().ScytheKillAuraMain = false
+            end)
+        end
+    end)
+-- Auto BLock
+Main:addToggle("Auto Block", nil, function(value)
+    if value then
+        pcall(function()
+            getgenv().AutoBlock = true
+            local args = {
+                [1] = "add_blocking",
+                [2] = "Players."..game.Players.LocalPlayer.Name..".PlayerScripts.Skills_Modules.Combat.Sword//Block",
+                [3] = 1,
+                [4] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name),
+                [5] = 1
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S"):FireServer(unpack(args))
+        end)
+    elseif not value then
+        pcall(function()
+            getgenv().AutoBlock = false
+            local args = {
+                [1] = "remove_blocking",
+                [2] = game:GetService("ReplicatedStorage"):WaitForChild("PlayerValues"):WaitForChild(game.Players.LocalPlayer.Name)
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("To_Server"):WaitForChild("Handle_Initiate_S_"):InvokeServer(unpack(args))
+        end)
+    end
+end) 
 
+-- Ouwigahara
+local Main = page:addSection("Ouwigahara")
+--Auto Farm Ouwigahara
+spawn(function()
+    function checkForMob()
+        local Bosses = workspace.Mobs:GetChildren()
+        local closestBoss = nil
+        local closestDistance = math.huge
+        local playerPosition = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position
+        local closestModel
+    
+        for i, v in pairs(Bosses) do
+            if v:FindFirstChildWhichIsA("Model") then
+                local Boss = v:FindFirstChildWhichIsA("Model")
+                closestModel = Boss
+                if Boss:FindFirstChild("HumanoidRootPart") then
+                    local bossPosition = Boss.HumanoidRootPart.Position
+                    local distance = (bossPosition - playerPosition).magnitude
+                    if distance < closestDistance then
+                        closestDistance = distance
+                        closestBoss = Boss
+                    end
+                end
+            end
+        end
+    
+        if closestBoss == nil and closestModel then
+            customTween2({closestModel.WorldPivot.Position})
+            task.wait()
+        else
+            return closestBoss
+        end
+    end
+    while task.wait() do
+        if getgenv().AutoFarmGahara then
+            pcall(function()
+                if not getgenv().AutoFarmGahara then return end
+                local Boss = checkForMob()
+                while Boss and Boss:FindFirstChild("Humanoid") and Boss:FindFirstChild("Humanoid").Health > 0 do
+                    task.wait()
+                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis2, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis
+                    local bossPosition = Boss.HumanoidRootPart.Position
+                    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                    local distance = (bossPosition - playerPosition).magnitude
+                    if distance > 100 then
+                        customTween2({bossPosition})
+                        task.wait()
+                    else
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = behind
+                        game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position, Boss.HumanoidRootPart.Position)
+                    end
+                end
+                task.wait()
+            end)
+            task.wait()
+        end
+    end
+end)
+Main:addToggle("Auto Farm", nil, function(value)
+    local args = {[1] = "Normal"}
+game:GetService("ReplicatedStorage"):WaitForChild("TeleportCirclesEvent"):FireServer(unpack(args))
+    getgenv().AutoFarmGahara = value
+end)
+--kill aura Ouwigahara
 spawn(function()
     local cdforsword = 1.8
     while task.wait() do
-        if getgenv().SwordKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        if getgenv().SwordKillAuraGHR and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
                 if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
                     repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
@@ -435,7 +563,7 @@ end)
 spawn(function()
     local cdforsword = 1.8
     while task.wait() do
-        if getgenv().FistKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        if getgenv().FistKillAuraGHR and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
                 if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
                     repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
@@ -471,7 +599,7 @@ end)
 spawn(function()
     local cdforsword = 1.97
     while task.wait() do
-        if getgenv().WarFanKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        if getgenv().WarFanKillAuraGHR and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
                 if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
                     repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
@@ -507,7 +635,7 @@ end)
 spawn(function()
     local cdforsword = 1.97
     while task.wait() do
-        if getgenv().ClawKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        if getgenv().ClawKillAuraGHR and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
                 if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
                     repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
@@ -543,7 +671,7 @@ end)
 spawn(function()
     local cdforsword = 1.97
     while task.wait() do
-        if getgenv().ScytheKillAura and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        if getgenv().ScytheKillAuraGHR and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
             pcall(function()
                 if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
                     repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
@@ -576,105 +704,92 @@ spawn(function()
         end
     end
 end)
--- Kill Aura
-getgenv().KillAuraType = "Combat"
+getgenv().KillAuraTypeGHR = "Combat"
     Main:addDropdown("Kill Aura Method", {"Combat", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
-        getgenv().KillAuraType = text 
+        getgenv().KillAuraTypeGHR = text 
 
-        if getgenv().FistKillAura or getgenv().SwordKillAura or getgenv().WarFanKillAura or getgenv().ClawKillAura or getgenv().ScytheKillAura or getgenv().AutoBlock then
-            getgenv().SwordKillAura = false
-            getgenv().FistKillAura = false
-            getgenv().WarFanKillAura = false
-            getgenv().ClawKillAura = false
-            getgenv().ScytheKillAura = false
-            getgenv().AutoBlock = false
+        if getgenv().FistKillAuraGHR or getgenv().SwordKillAuraGHR or getgenv().WarFanKillAuraGHR or getgenv().ClawKillAuraGHR or getgenv().ScytheKillAuraGHR then
+            getgenv().SwordKillAuraGHR = false
+            getgenv().FistKillAuraGHR = false
+            getgenv().WarFanKillAuraGHR = false
+            getgenv().ClawKillAuraGHR = false
+            getgenv().ScytheKillAuraGHR = false
             task.wait(3)
-            if getgenv().KillAuraType == "Combat" then
-                getgenv().AutoBlock = true
-                getgenv().FistKillAura = true
-                getgenv().SwordKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Sword" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = true
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "WarFan" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = true
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Claw" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = true
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Scythe" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = true
+            if getgenv().KillAuraTypeGHR == "Combat" then
+                getgenv().FistKillAuraGHR = true
+                getgenv().SwordKillAuraGHR = false
+                getgenv().WarFanKillAuraGHR = false
+                getgenv().ClawKillAuraGHR = false
+                getgenv().ScytheKillAuraGHR = false
+            elseif getgenv().KillAuraTypeGHR == "Sword" then
+                getgenv().SwordKillAuraGHR = true
+                getgenv().FistKillAuraGHR = false
+                getgenv().WarFanKillAuraGHR = false
+                getgenv().ClawKillAuraGHR = false
+                getgenv().ScytheKillAuraGHR = false
+            elseif getgenv().KillAuraTypeGHR == "WarFan" then
+                getgenv().SwordKillAuraGHR = false
+                getgenv().FistKillAuraGHR = false
+                getgenv().WarFanKillAuraGHR = true
+                getgenv().ClawKillAuraGHR = false
+                getgenv().ScytheKillAuraGHR = false
+            elseif getgenv().KillAuraTypeGHR == "Claw" then
+                getgenv().SwordKillAuraGHR = false
+                getgenv().FistKillAuraGHR = false
+                getgenv().WarFanKillAuraGHR = false
+                getgenv().ClawKillAuraGHR = true
+                getgenv().ScytheKillAuraGHR = false
+            elseif getgenv().KillAuraTypeGHR == "Scythe" then
+                getgenv().SwordKillAuraGHR = false
+                getgenv().FistKillAuraGHR = false
+                getgenv().WarFanKillAuraGHR = false
+                getgenv().ClawKillAuraGHR = false
+                getgenv().ScytheKillAuraGHR = true
             end
         end
     end)
     Main:addToggle("Kill Aura", nil, function(value)
         if value then
             pcall(function()
-                if getgenv().KillAuraType == "Combat" then
-                    getgenv().AutoBlock = true
-                    getgenv().FistKillAura = true
-                    getgenv().SwordKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Sword" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = true
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "WarFan" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = true
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Claw" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = true
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Scythe" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = true
+                if getgenv().KillAuraTypeGHR == "Combat" then
+                    getgenv().FistKillAuraGHR = true
+                    getgenv().SwordKillAuraGHR = false
+                    getgenv().WarFanKillAuraGHR = false
+                    getgenv().ClawKillAuraGHR = false
+                    getgenv().ScytheKillAuraGHR = false
+                elseif getgenv().KillAuraTypeGHR == "Sword" then
+                    getgenv().SwordKillAuraGHR = true
+                    getgenv().FistKillAuraGHR = false
+                    getgenv().WarFanKillAuraGHR = false
+                    getgenv().ClawKillAuraGHR = false
+                    getgenv().ScytheKillAuraGHR = false
+                elseif getgenv().KillAuraTypeGHR == "WarFan" then
+                    getgenv().SwordKillAuraGHR = false
+                    getgenv().FistKillAuraGHR = false
+                    getgenv().WarFanKillAuraGHR = true
+                    getgenv().ClawKillAuraGHR = false
+                    getgenv().ScytheKillAuraGHR = false
+                elseif getgenv().KillAuraTypeGHR == "Claw" then
+                    getgenv().SwordKillAuraGHR = false
+                    getgenv().FistKillAuraGHR = false
+                    getgenv().WarFanKillAuraGHR = false
+                    getgenv().ClawKillAuraGHR = true
+                    getgenv().ScytheKillAuraGHR = false
+                elseif getgenv().KillAuraTypeGHR == "Scythe" then
+                    getgenv().SwordKillAuraGHR = false
+                    getgenv().FistKillAuraGHR = false
+                    getgenv().WarFanKillAuraGHR = false
+                    getgenv().ClawKillAuraGHR = false
+                    getgenv().ScytheKillAuraGHR = true
                 end
             end)
         elseif not value then
             pcall(function()
-                getgenv().AutoBlock = false
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
+                getgenv().SwordKillAuraGHR = false
+                getgenv().FistKillAuraGHR = false
+                getgenv().WarFanKillAuraGHR = false
+                getgenv().ClawKillAuraGHR = false
+                getgenv().ScytheKillAuraGHR = false
             end)
         end
     end)
@@ -715,111 +830,334 @@ end)
         game:GetService("ReplicatedStorage"):WaitForChild("TeleportToShop"):FireServer()
     end)
 --MUGEN TRAIN
-
-    local Main = page:addSection("Mugen Train")
+local Main = page:addSection("Mugen Train")
+--Auto Farm Mugen Train
+spawn(function()
+    function checkForMob2()
+        local Bosses = workspace.Mobs:GetChildren()
+        local closestBoss = nil
+        local closestDistance = math.huge
+        local playerPosition = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position
+        local closestModel
+    
+        for i, v in pairs(Bosses) do
+            if v:FindFirstChildWhichIsA("Model") then
+                local Boss = v:FindFirstChildWhichIsA("Model")
+                closestModel = Boss
+                if Boss:FindFirstChild("HumanoidRootPart") then
+                    local bossPosition = Boss.HumanoidRootPart.Position
+                    local distance = (bossPosition - playerPosition).magnitude
+                    if distance < closestDistance then
+                        closestDistance = distance
+                        closestBoss = Boss
+                    end
+                end
+            end
+        end
+    
+        if closestBoss == nil and closestModel then
+            customTween2({closestModel.WorldPivot.Position})
+            task.wait()
+        else
+            return closestBoss
+        end
+    end
+    while task.wait() do
+        if getgenv().AutoFarmMugen then
+            pcall(function()
+                if not getgenv().AutoFarmMugen then return end
+                local Boss = checkForMob2()
+                while Boss and Boss:FindFirstChild("Humanoid") and Boss:FindFirstChild("Humanoid").Health > 0 do
+                    task.wait()
+                    local behind = Boss:FindFirstChild("HumanoidRootPart").CFrame + Vector3.new(0, getgenv().mobdis4, 0) + Boss:FindFirstChild("HumanoidRootPart").CFrame.LookVector * getgenv().mobdis3
+                    local bossPosition = Boss.HumanoidRootPart.Position
+                    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                    local distance = (bossPosition - playerPosition).magnitude
+                    if distance > 450 then
+                        customTween2({bossPosition})
+                        task.wait(4)
+                    else
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = behind
+                        game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").Position, Boss.HumanoidRootPart.Position)
+                    end
+                end
+                task.wait()
+            end)
+            task.wait()
+        end
+    end
+end)
 Main:addToggle("Auto Farm", nil, function(value)
     getgenv().AutoFarmMugen = value
 end)
 
--- Kill Aura
-getgenv().KillAuraType = "Combat"
+-- Kill Aura Mugen Train
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().SwordKillAuraMGT and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "Sword_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "Sword_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.1)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().FistKillAuraMGT and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "fist_combat"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "fist_combat"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.5)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().WarFanKillAuraMGT and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "fans_combat_slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "fans_combat_slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.1)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().ClawKillAuraMGT and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "claw_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "claw_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.1)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+spawn(function()
+    local cdforsword = 1.75
+    while task.wait() do
+        if getgenv().ScytheKillAuraMGT and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            pcall(function()
+                if getgenv().AutoBlock and game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun") then
+                    repeat task.wait() until not game:GetService("ReplicatedStorage").PlayerValues:FindFirstChild(LocalPlayer.Name):FindFirstChild("Stun")
+                elseif (tick() - getgenv().Howlongsincelastfired) > cdforsword then 
+                    for i = 1, 7 do
+                        local ohString1 = "Scythe_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = math.huge
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                        
+                        local ohString1 = "Scythe_Combat_Slash"
+                        local ohInstance2 = game:GetService("Players").LocalPlayer
+                        local ohInstance3 = ohInstance2.Character
+                        local ohInstance4 = ohInstance2.Character.HumanoidRootPart
+                        local ohInstance5 = ohInstance2.Character.Humanoid
+                        local ohNumber6 = 919
+                        local ohString7 = "ground_slash"
+                        
+                        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(ohString1, ohInstance2, ohInstance3, ohInstance4, ohInstance5, ohNumber6, ohString7)
+                    end
+                    task.wait(0.1)
+                    getgenv().Howlongsincelastfired = tick()    
+                end
+            end)
+        end
+    end
+end)
+getgenv().KillAuraTypeMGT = "Combat"
     Main:addDropdown("Kill Aura Method", {"Combat", "Sword", "WarFan", "Claw", "Scythe"}, function(text)
-        getgenv().KillAuraType = text 
+        getgenv().KillAuraTypeMGT = text 
 
-        if getgenv().FistKillAura or getgenv().SwordKillAura or getgenv().WarFanKillAura or getgenv().ClawKillAura or getgenv().ScytheKillAura or getgenv().AutoBlock then
-            getgenv().SwordKillAura = false
-            getgenv().FistKillAura = false
-            getgenv().WarFanKillAura = false
-            getgenv().ClawKillAura = false
-            getgenv().ScytheKillAura = false
-            getgenv().AutoBlock = false
+        if getgenv().FistKillAuraMGT or getgenv().SwordKillAuraMGT or getgenv().WarFanKillAuraMGT or getgenv().ClawKillAuraMGT or getgenv().ScytheKillAuraMGT then
+            getgenv().SwordKillAuraMGT = false
+            getgenv().FistKillAuraMGT = false
+            getgenv().WarFanKillAuraMGT = false
+            getgenv().ClawKillAuraMGT = false
+            getgenv().ScytheKillAuraMGT = false
             task.wait(3)
-            if getgenv().KillAuraType == "Combat" then
-                getgenv().AutoBlock = true
-                getgenv().FistKillAura = true
-                getgenv().SwordKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Sword" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = true
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "WarFan" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = true
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Claw" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = true
-                getgenv().ScytheKillAura = false
-            elseif getgenv().KillAuraType == "Scythe" then
-                getgenv().AutoBlock = true
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = true
+            if getgenv().KillAuraTypeMGT == "Combat" then
+                getgenv().FistKillAuraMGT = true
+                getgenv().SwordKillAuraMGT = false
+                getgenv().WarFanKillAuraMGT = false
+                getgenv().ClawKillAuraMGT = false
+                getgenv().ScytheKillAuraMGT = false
+            elseif getgenv().KillAuraTypeMGT == "Sword" then
+                getgenv().SwordKillAuraMGT = true
+                getgenv().FistKillAuraMGT = false
+                getgenv().WarFanKillAuraMGT = false
+                getgenv().ClawKillAuraMGT = false
+                getgenv().ScytheKillAuraMGT = false
+            elseif getgenv().KillAuraTypeMGT == "WarFan" then
+                getgenv().SwordKillAuraMGT = false
+                getgenv().FistKillAuraMGT = false
+                getgenv().WarFanKillAuraMGT = true
+                getgenv().ClawKillAuraMGT = false
+                getgenv().ScytheKillAuraMGT = false
+            elseif getgenv().KillAuraTypeMGT == "Claw" then
+                getgenv().SwordKillAuraMGT = false
+                getgenv().FistKillAuraMGT = false
+                getgenv().WarFanKillAuraMGT = false
+                getgenv().ClawKillAuraMGT = true
+                getgenv().ScytheKillAuraMGT = false
+            elseif getgenv().KillAuraTypeMGT == "Scythe" then
+                getgenv().SwordKillAuraMGT = false
+                getgenv().FistKillAuraMGT = false
+                getgenv().WarFanKillAuraMGT = false
+                getgenv().ClawKillAuraMGT = false
+                getgenv().ScytheKillAuraMGT = true
             end
         end
     end)
     Main:addToggle("Kill Aura", nil, function(value)
         if value then
             pcall(function()
-                if getgenv().KillAuraType == "Combat" then
-                    getgenv().AutoBlock = true
-                    getgenv().FistKillAura = true
-                    getgenv().SwordKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Sword" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = true
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "WarFan" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = true
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Claw" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = true
-                    getgenv().ScytheKillAura = false
-                elseif getgenv().KillAuraType == "Scythe" then
-                    getgenv().AutoBlock = true
-                    getgenv().SwordKillAura = false
-                    getgenv().FistKillAura = false
-                    getgenv().WarFanKillAura = false
-                    getgenv().ClawKillAura = false
-                    getgenv().ScytheKillAura = true
+                if getgenv().KillAuraTypeMGT == "Combat" then
+                    getgenv().FistKillAuraMGT = true
+                    getgenv().SwordKillAuraMGT = false
+                    getgenv().WarFanKillAuraMGT = false
+                    getgenv().ClawKillAuraMGT = false
+                    getgenv().ScytheKillAuraMGT = false
+                elseif getgenv().KillAuraTypeMGT == "Sword" then
+                    getgenv().SwordKillAuraMGT = true
+                    getgenv().FistKillAuraMGT = false
+                    getgenv().WarFanKillAuraMGT = false
+                    getgenv().ClawKillAuraMGT = false
+                    getgenv().ScytheKillAuraMGT = false
+                elseif getgenv().KillAuraTypeMGT == "WarFan" then
+                    getgenv().SwordKillAuraMGT = false
+                    getgenv().FistKillAuraMGT = false
+                    getgenv().WarFanKillAuraMGT = true
+                    getgenv().ClawKillAuraMGT = false
+                    getgenv().ScytheKillAuraMGT = false
+                elseif getgenv().KillAuraTypeMGT == "Claw" then
+                    getgenv().SwordKillAuraMGT = false
+                    getgenv().FistKillAuraMGT = false
+                    getgenv().WarFanKillAuraMGT = false
+                    getgenv().ClawKillAuraMGT = true
+                    getgenv().ScytheKillAuraMGT = false
+                elseif getgenv().KillAuraTypeMGT == "Scythe" then
+                    getgenv().SwordKillAuraMGT = false
+                    getgenv().FistKillAuraMGT = false
+                    getgenv().WarFanKillAuraMGT = false
+                    getgenv().ClawKillAuraMGT = false
+                    getgenv().ScytheKillAuraMGT = true
                 end
             end)
         elseif not value then
             pcall(function()
-                getgenv().AutoBlock = false
-                getgenv().SwordKillAura = false
-                getgenv().FistKillAura = false
-                getgenv().WarFanKillAura = false
-                getgenv().ClawKillAura = false
-                getgenv().ScytheKillAura = false
+                getgenv().SwordKillAuraMGT = false
+                getgenv().FistKillAuraMGT = false
+                getgenv().WarFanKillAuraMGT = false
+                getgenv().ClawKillAuraMGT = false
+                getgenv().ScytheKillAuraMGT = false
             end)
         end
     end)
@@ -865,21 +1203,7 @@ getgenv().KillAuraType = "Combat"
     local page2 = venyx:addPage("Misc", 13677751482)
     local Misc = page2:addSection("Local Player - Human")
     
-    Misc:addToggle("Semi Kamado [Only Kamado]", false, function(value)
-        if value then
-            pcall(function()
-                getgenv().Kamado = true
-    game:GetService("ReplicatedStorage").Remotes.heal_tang123asd:FireServer(true)
-        end)
-    elseif not value then
-        pcall(function()
-            getgenv().Kamado = false
-    game:GetService("ReplicatedStorage").Remotes.heal_tang123asd:FireServer(false)
-        end)
-    end
-    end)
-    
-    Misc:addToggle("Semi Rengoku [Only Human]", false, function(value)
+    Misc:addToggle("Mode Rengoku [Human]", false, function(value)
         if value then
             pcall(function()
                 getgenv().Rengoku = true
@@ -893,7 +1217,7 @@ getgenv().KillAuraType = "Combat"
         end
     end)
 
-    Misc:addToggle("Semi Zennitsu [Only Human]", false, function(value)
+    Misc:addToggle("Mode Zennitsu [Human]", false, function(value)
         if value then
             pcall(function()
                 getgenv().Zennitsu = true
@@ -933,7 +1257,7 @@ getgenv().KillAuraType = "Combat"
             end)
         end
     end)
-    local Misc = page2:addSection("Local Player - Demon")
+    local Misc = page2:addSection("Local Player")
     Misc:addToggle("Auto War Drums", false, function(value)
         if value then
             while value == true do
@@ -959,6 +1283,20 @@ wait(22)
     end)
 
     local Misc = page2:addSection("God Mode")
+    Misc:addToggle("God Mode [Only Kamado]", false, function(value)
+        if value then
+            pcall(function()
+                getgenv().Kamado = true
+    game:GetService("ReplicatedStorage").Remotes.heal_tang123asd:FireServer(true)
+        end)
+    elseif not value then
+        pcall(function()
+            getgenv().Kamado = false
+    game:GetService("ReplicatedStorage").Remotes.heal_tang123asd:FireServer(false)
+        end)
+    end
+    end)
+
     Misc:addToggle("God Mode [Only Douma]", false, function(value)
         if value then
             while value == true do
@@ -987,10 +1325,98 @@ wait(22)
     end)
      --Muzan
     local Misc = page2:addSection("Quest Muzan")
---Telport Muzan
+--Telport Muzan 525.875, 321.917, -2304.85
     Misc:addButton("Teleport To Muzan", function()
         game.Players.LocalPlayer.Character:MoveTo(game:GetService("Workspace").Muzan.SpawnPos.Value) 
     end)
+--Teleport Flower (Reset To Stop)
+local player = game.Players.LocalPlayer
+local ts = game:GetService("TweenService")
+local force = Instance.new("BodyVelocity")
+force.Velocity = Vector3.new(0, 0, 0)
+
+
+function tween(P1)
+    Distance = (P1.Position - player.Character.HumanoidRootPart.Position).Magnitude
+    if Distance < 150 then
+        Speed = 20000
+    elseif Distance < 200 then
+        Speed = 5000
+    elseif Distance < 300 then
+        Speed = 1030
+    elseif Distance < 500 then
+        Speed = 725
+    elseif Distance < 1000 then
+        Speed = 365
+    elseif Distance >= 1000 then
+        Speed = 365
+    end
+    local twen = ts:Create(
+        game.Players.LocalPlayer.Character.HumanoidRootPart,
+        TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear),
+        {CFrame = P1}
+    )
+
+    twen:Play()
+    force.Parent = player.Character.HumanoidRootPart
+    wait(Distance/Speed)
+    force.Parent = nil
+        
+        
+        for i, v in pairs(workspace.Demon_Flowers_Spawn:GetDescendants()) do
+            if v.Name == "Cube.002" then
+                for i, v in pairs(workspace.Demon_Flowers_Spawn:GetDescendants()) do
+                    if v.Name == "Cancel" then
+                        v:Destroy()
+                    end
+                end
+                ts:Create(player.Character.HumanoidRootPart,
+                TweenInfo.new(1, Enum.EasingStyle.Linear),
+                {CFrame = CFrame.new(v.Position)}):Play()
+                force.Parent = player.Character.HumanoidRootPart
+                wait(1.2)
+                pcall(function()
+                    fireproximityprompt(v.Pick_Demon_Flower_Thing)
+                end)
+                wait(.3)
+                force.Parent = nil
+                v.Parent:Destroy()
+            end
+        end
+end
+
+
+function idletween()
+    task.spawn(function()
+        if idletween then
+        while task.wait() do
+            tween(CFrame.new(118, 282, -1630))
+            
+            tween(CFrame.new(1466, 297, -3025))
+            
+            tween(CFrame.new(1871, 317, -3120))
+
+            tween(CFrame.new(3083, 317, -3287))
+            
+            tween(CFrame.new(3245, 317, -2720))
+
+            tween(CFrame.new(3869, 343, -3121))
+            
+            tween(CFrame.new(5186, 365, -2435))
+            
+            tween(CFrame.new(123, 275, -3275))
+            
+            tween(CFrame.new(-328, 426, -2188))
+
+    end
+    end
+    end)
+    end
+
+Misc:addToggle("Tween To Flower", false, function(a)
+	getgenv().idletween = a
+    idletween()
+end)
 --Quest Soryu
 getgenv().mobdis5 = 0
 getgenv().mobdis6 = 7
@@ -1160,8 +1586,6 @@ end)
         end
     end)
 
-    
-    
     venyx:SelectPage(venyx.pages[1], true)
 end
 Reloadgui()
