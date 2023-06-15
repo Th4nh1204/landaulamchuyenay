@@ -51,16 +51,17 @@ local LocalPlayer = Players.LocalPlayer
         VirtualUser:CaptureController()
         VirtualUser:ClickButton2(Vector2.new())
     end)
-    --No Clip
+    --NoClip
 spawn(function()
     game:GetService("RunService").Stepped:Connect(function()
-        if getgenv().AutoFarmBoss or getgenv().AutoFarmGahara or getgenv().idletween then
+        if getgenv().AutoFarmBoss or getgenv().AutoFarmGahara or getgenv().AutoFarmMugen or getgenv().idletween then
             for _, v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
                 if v:IsA("BasePart") then
                     v.CanCollide = false    
                 end
                 if v:IsA("Humanoid") then
-                    v:ChangeState(11)
+                    v:ChangeState(11)   
+                    v.CanCollide = true 
                 end
             end
         end
