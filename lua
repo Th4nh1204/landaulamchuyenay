@@ -1,4 +1,3 @@
-
 --reload gui
 function Reloadgui()
     for i, v in pairs(game:GetService("CoreGui"):GetChildren()) do
@@ -55,13 +54,13 @@ local LocalPlayer = Players.LocalPlayer
     --NoClip
 spawn(function()
     game:GetService("RunService").Stepped:Connect(function()
-        if getgenv().AutoFarmBoss or getgenv().AutoFarmGahara or getgenv().AutoFarmMugen then
+        if getgenv().AutoFarmBoss or getgenv().AutoFarmGahara or getgenv().AutoFarmMugen or getgenv().idletween then
             for _, v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
                 if v:IsA("BasePart") then
                     v.CanCollide = false    
                 end
                 if v:IsA("Humanoid") then
-                    v:ChangeState(11)
+                    v:ChangeState(11) 
                 end
             end
         end
@@ -1244,7 +1243,7 @@ getgenv().KillAuraTypeMGT = "Combat"
             end)
         end
     end)
---Inf Breathing/Stam
+    --Inf Breathing/Stam
 spawn(function()
     while task.wait() do
         if getgenv().AutoStamina then
@@ -1289,6 +1288,7 @@ wait(22)
             end)
         end
     end)
+
     local Misc = page2:addSection("God Mode")
     Misc:addToggle("God Mode [Only Kamado]", false, function(value)
         if value then
@@ -1336,6 +1336,94 @@ wait(22)
     Misc:addButton("Teleport To Muzan", function()
         game.Players.LocalPlayer.Character:MoveTo(game:GetService("Workspace").Muzan.SpawnPos.Value) 
     end)
+--Teleport Flower (Reset To Stop)
+local player = game.Players.LocalPlayer
+local ts = game:GetService("TweenService")
+local force = Instance.new("BodyVelocity")
+force.Velocity = Vector3.new(0, 0, 0)
+
+
+function tween(P1)
+    Distance = (P1.Position - player.Character.HumanoidRootPart.Position).Magnitude
+    if Distance < 150 then
+        Speed = 20000
+    elseif Distance < 200 then
+        Speed = 5000
+    elseif Distance < 300 then
+        Speed = 1030
+    elseif Distance < 500 then
+        Speed = 725
+    elseif Distance < 1000 then
+        Speed = 365
+    elseif Distance >= 1000 then
+        Speed = 365
+    end
+    local twen = ts:Create(
+        game.Players.LocalPlayer.Character.HumanoidRootPart,
+        TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear),
+        {CFrame = P1}
+    )
+
+    twen:Play()
+    force.Parent = player.Character.HumanoidRootPart
+    wait(Distance/Speed)
+    force.Parent = nil
+        
+        
+        for i, v in pairs(workspace.Demon_Flowers_Spawn:GetDescendants()) do
+            if v.Name == "Cube.002" then
+                for i, v in pairs(workspace.Demon_Flowers_Spawn:GetDescendants()) do
+                    if v.Name == "Cancel" then
+                        v:Destroy()
+                    end
+                end
+                ts:Create(player.Character.HumanoidRootPart,
+                TweenInfo.new(1, Enum.EasingStyle.Linear),
+                {CFrame = CFrame.new(v.Position)}):Play()
+                force.Parent = player.Character.HumanoidRootPart
+                wait(1.2)
+                pcall(function()
+                    fireproximityprompt(v.Pick_Demon_Flower_Thing)
+                end)
+                wait(.3)
+                force.Parent = nil
+                v.Parent:Destroy()
+            end
+        end
+end
+
+
+function idletween()
+    task.spawn(function()
+        if idletween then
+        while task.wait() do
+            tween(CFrame.new(118, 282, -1630))
+            
+            tween(CFrame.new(1466, 297, -3025))
+            
+            tween(CFrame.new(1871, 317, -3120))
+
+            tween(CFrame.new(3083, 317, -3287))
+            
+            tween(CFrame.new(3245, 317, -2720))
+
+            tween(CFrame.new(3869, 343, -3121))
+            
+            tween(CFrame.new(5186, 365, -2435))
+            
+            tween(CFrame.new(123, 275, -3275))
+            
+            tween(CFrame.new(-328, 426, -2188))
+
+    end
+    end
+    end)
+    end
+
+Misc:addToggle("Tween To Flower", false, function(a)
+	getgenv().idletween = a
+    idletween()
+end)
 --Quest Soryu
 getgenv().mobdis5 = 0
 getgenv().mobdis6 = 7
@@ -1458,8 +1546,6 @@ end)
     Misc:addToggle("Auto Farm 20K Damage", false, function(value)
         getgenv().AutoMob20KDMG = value
     end)
-    local Misc = page2:addSection("Quest Zennitsu")
-
 --Other
     local Misc = page2:addSection("Other")
     Misc:addKeybind("Keybind Turn ON/OFF", Enum.KeyCode.LeftControl, function()
@@ -1507,7 +1593,6 @@ end)
         end
     end)
 
-    
     venyx:SelectPage(venyx.pages[1], true)
 end
 Reloadgui()
